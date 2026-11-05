@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import { Hanken_Grotesk, Marcellus } from 'next/font/google';
+import localFont from 'next/font/local';
 import './globals.css';
 import { fetchDelivery, SITE_URL, type DeliveryPayload } from '@/lib/cms';
 import { CmsProvider } from '@/components/CmsProvider';
@@ -9,6 +10,16 @@ import { Footer, Header, ThemeVars, WhatsAppFloat } from '@/components/Shell';
 import { themeStyle } from '@/lib/theme';
 
 const marcellus = Marcellus({ subsets: ['latin'], weight: '400', variable: '--font-marcellus', display: 'swap' });
+// Marcellus draws 1 and 0 like I and O; display digits come from Hanken Grotesk instead.
+const figures = localFont({
+  src: './fonts/hanken-figures.woff2',
+  variable: '--font-figures',
+  weight: '400 500',
+  display: 'swap',
+  fallback: [],
+  adjustFontFallback: false,
+  declarations: [{ prop: 'unicode-range', value: 'U+0030-0039' }],
+});
 const hanken = Hanken_Grotesk({ subsets: ['latin'], variable: '--font-hanken', display: 'swap' });
 
 export const revalidate = 30;
@@ -56,7 +67,7 @@ const EMPTY: DeliveryPayload = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const payload = (await fetchDelivery()) || EMPTY;
   return (
-    <html lang="es-CO" className={`${marcellus.variable} ${hanken.variable}`} style={themeStyle(payload.global)}>
+    <html lang="es-CO" className={`${figures.variable} ${marcellus.variable} ${hanken.variable}`} style={themeStyle(payload.global)}>
       <body>
         <CmsProvider initial={payload}>
           <CartProvider>

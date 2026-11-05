@@ -18,7 +18,7 @@
   --max: 1440px;
   --radius: 2px;
 
-  --font-display: var(--font-marcellus), 'Times New Roman', serif;
+  --font-display: var(--font-figures), var(--font-marcellus), 'Times New Roman', serif;
   --font-body: var(--font-hanken), system-ui, sans-serif;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
