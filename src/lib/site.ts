@@ -1,10 +1,18 @@
 import { tryFetchDelivery, type DeliveryPayload } from '@latinovation/cms-client';
 
 export const CMS_URL = (process.env.NEXT_PUBLIC_CMS_URL || 'https://webproai.tech').replace(/\/$/, '');
+/**
+ * API de la tienda (checkout, pagos, rastreo, cuentas de cliente). Por defecto el mismo CMS; se puede apuntar
+ * a otro backend (p. ej. un mock local) sin cambiar de dónde sale el contenido.
+ */
+export const SHOP_API_URL = (process.env.NEXT_PUBLIC_SHOP_API_URL || CMS_URL).replace(/\/$/, '');
 export const CMS_SLUG = process.env.NEXT_PUBLIC_CMS_SLUG || 'tusplatos';
 export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || 'https://tusplatos.webproai.tech').replace(/\/$/, '');
 /** Orígenes extra del portal (desarrollo local del CMS). */
-export const PORTAL_ORIGINS = (process.env.NEXT_PUBLIC_PORTAL_ORIGINS || 'http://localhost:3005').split(',').map((s) => s.trim()).filter(Boolean);
+export const PORTAL_ORIGINS = (process.env.NEXT_PUBLIC_PORTAL_ORIGINS || 'http://localhost:3005')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
 
 export const EMPTY_SITE: DeliveryPayload = {
   project: { id: '', name: 'TusPlatos', slug: CMS_SLUG },

@@ -6,6 +6,8 @@ import './globals.css';
 import { CMS_SLUG, CMS_URL, getSite, PORTAL_ORIGINS, SITE_URL } from '@/lib/site';
 import { ldScript, organizationLd } from '@/lib/seo';
 import { StoreProvider } from '@/components/StoreProvider';
+import { AccountProvider } from '@/components/AccountProvider';
+import { accountsEnabled, getStoreConfig } from '@/lib/store-config';
 import { CartDrawer } from '@/components/CartDrawer';
 import { QuickView } from '@/components/QuickView';
 import { Footer, Header, WhatsAppFloat } from '@/components/Shell';
@@ -53,7 +55,8 @@ export const viewport: Viewport = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const site = await getSite();
+  const [site, storeConfig] = await Promise.all([getSite(), getStoreConfig()]);
+  const accounts = storeConfig?.customerAccounts;
   return (
     <html lang="es-CO" className={figures.variable}>
       <head>
@@ -67,14 +70,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
         </a>
         {/* El provider detecta ?preview=1&builder=1&previewToken=… del portal; para los visitantes no cambia nada. */}
         <CmsProvider initial={site} slug={CMS_SLUG} cmsUrl={CMS_URL} allowedOrigins={PORTAL_ORIGINS}>
-          <StoreProvider>
-            <Header />
-            <main id="contenido">{children}</main>
-            <Footer />
-            <CartDrawer />
-            <QuickView />
-            <WhatsAppFloat />
-          </StoreProvider>
+          <AccountProvider enabled={accountsEnabled(storeConfig)} allowGuestCheckout={accounts?.allowGuestCheckout !== false} privacyPolicyUrl={accounts?.privacyPolicyUrl || ''}>
+            <StoreProvider>
+              <Header />
+              <main id="contenido">{children}</main>
+              <Footer />
+              <CartDrawer />
+              <QuickView />
+              <WhatsAppFloat />
+            </StoreProvider>
+          </AccountProvider>
         </CmsProvider>
         <script type="application/ld+json" dangerouslySetInnerHTML={ldScript(organizationLd(site))} />
       </body>

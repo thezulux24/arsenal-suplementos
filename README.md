@@ -42,7 +42,7 @@ npm run build && npx next start -p 3010
 npm run cms:audit     # bin/audit-editability.mjs --slug tusplatos --url http://localhost:3010 --item-route /producto/:slug --min 95
 ```
 
-Resultado actual: **328/344 = 95,3 %**. Lo que falta son textos que solo aparecen en un estado (pago aprobado/rechazado, sin resultados, pago en línea mientras la pasarela no tenga llave pública).
+Resultado actual: **96,3 %** con las cuentas apagadas y **95,9 %** con las cuentas activas (`node scripts/mock-shop.mjs` + `NEXT_PUBLIC_SHOP_API_URL`). Los estados de una vista (pago aprobado, en verificación o rechazado; pestañas; mensajes) se pintan en el servidor y se alternan con `hidden`, así que existen en el lienzo y en el portal se ven todos para editarlos. Lo que falta son textos que solo existen con datos (botones de cada pedido o dirección, sin resultados, métodos de pago apagados).
 
 ## Tienda
 
@@ -52,6 +52,8 @@ Resultado actual: **328/344 = 95,3 %**. Lo que falta son textos que solo aparece
 - Vista rápida, favoritos (`/favoritos`, localStorage), vistos recientemente, buscador con sugerencias en la cabecera y `/buscar`.
 - Carrito en cajón con barra de envío gratis, cantidades, quitar y nota del pedido.
 - `/checkout` contra `POST /api/ecommerce/public/tusplatos/checkout` (el servidor recalcula precios y stock). Solo muestra los medios de pago que la tienda tiene activos (`/config`): pago en línea únicamente si la pasarela tiene llave pública. `/pedido` confirma (y lee el resultado de la pasarela), `/rastreo` sigue el pedido.
+- **Pagos rechazados**: al volver de la pasarela, `/pedido` siempre llama a `confirm-order` y muestra uno de tres estados (aprobado, en verificación, rechazado). Un pago rechazado no se rastrea (`/rastreo` recibe 409 `PAYMENT_FAILED` y ofrece reintentar); `/pedido` ofrece «Reintentar el pago» (`retry-payment` con el correo del pedido o la sesión), «Recuperar mi carrito» (copia del carrito en `sessionStorage` antes de la pasarela) y ayuda por WhatsApp.
+- **Cuentas de cliente** (contrato `docs/SHOP-ACCOUNTS.md` del CMS; cliente en `src/lib/account.ts`, misma superficie que `createShopClient` del SDK): `/cuenta` (entrar, crear cuenta, recuperar contraseña), `/cuenta/pedidos`, `/cuenta/direcciones`, `/cuenta/datos` (datos, contraseña, cerrar sesión en todos los dispositivos, eliminar cuenta) y `/cuenta/restablecer`. El checkout prellena datos y direcciones guardadas con sesión, y después de una compra como invitado `/pedido` ofrece crear la cuenta con ese pedido. Todo depende de `customerAccounts.enabled` en `/config`: apagado, no hay icono de cuenta ni textos de cuenta y las rutas `/cuenta*` dan 404.
 - `sitemap.xml`, `robots.txt`, JSON-LD `Store`, 404 del CMS, `/api/revalidate` para el webhook de publicación.
 
 ## Desarrollo
@@ -62,6 +64,8 @@ npm run dev          # http://localhost:3010
 npm run typecheck
 npm run build
 ```
+
+Para probar cuentas y pagos rechazados sin el backend: `node scripts/mock-shop.mjs` (API en memoria en `:4319`, con una pasarela de prueba que aprueba, rechaza o deja pendiente) y `NEXT_PUBLIC_SHOP_API_URL=http://localhost:4319 npm run dev`.
 
 Variables: ver [`.env.example`](.env.example).
 

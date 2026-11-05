@@ -1,4 +1,4 @@
-import { CMS_SLUG, CMS_URL } from './site';
+import { shop, ShopError, type PublicOrderSummary } from './account';
 
 export const ORDER_STATUS: Record<string, string> = {
   PENDING_PAYMENT: 'Esperando pago',
@@ -14,31 +14,67 @@ export const ORDER_STATUS: Record<string, string> = {
   CANCELLED: 'Cancelado',
   REFUNDED: 'Reembolsado',
   FAILED: 'Pago rechazado',
+  PAYMENT_FAILED: 'Pago rechazado',
 };
 
 export const label = (s?: string) => (s ? ORDER_STATUS[s] || s.replace(/_/g, ' ').toLowerCase() : '');
 
-export async function trackOrder(code: string) {
-  const res = await fetch(`${CMS_URL}/api/ecommerce/public/${CMS_SLUG}/track/${encodeURIComponent(code.trim())}`, { cache: 'no-store' });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data?.message || 'No encontramos ese pedido.');
-  return data;
+/** Rastreo público. Lanza ShopError (409 `PAYMENT_FAILED` si el pago fue rechazado: ese pedido no se rastrea). */
+export function trackOrder(code: string) {
+  return shop.track(code);
 }
 
-/** Reads the payment-gateway transaction the checkout redirected back with, and records an approved payment in the CMS. */
-export async function settleWompi(transactionId: string, env: string | null, orderNumber: string) {
+export const isPaymentFailedError = (e: unknown): e is ShopError => e instanceof ShopError && (e.code === 'PAYMENT_FAILED' || (e.status === 409 && e.data?.code === 'PAYMENT_FAILED'));
+
+export type PaymentState = 'approved' | 'failed' | 'pending' | 'unknown';
+
+const FAILED_GATEWAY = ['DECLINED', 'VOIDED', 'ERROR'];
+
+/** Estado del pago a partir de lo que diga el backend (o la pasarela, si el backend no respondió). */
+export function paymentState(paymentStatus?: string, gatewayStatus?: string): PaymentState {
+  const ps = String(paymentStatus || '').toUpperCase();
+  const gs = String(gatewayStatus || '').toUpperCase();
+  if (ps === 'PAID' || ps === 'APPROVED' || (!ps && gs === 'APPROVED')) return 'approved';
+  if (ps === 'FAILED' || FAILED_GATEWAY.includes(gs)) return 'failed';
+  if (ps === 'PENDING' || gs === 'PENDING') return 'pending';
+  return 'unknown';
+}
+
+export interface Settlement {
+  state: PaymentState;
+  canRetry: boolean;
+  order: PublicOrderSummary | null;
+  /** true si el estado salió de leer la pasarela porque confirm-order falló. */
+  fallback?: boolean;
+}
+
+/**
+ * Regreso de la pasarela: SIEMPRE avisa al backend (`confirm-order`, aprobado o no) y usa su respuesta;
+ * el backend verifica la transacción con la pasarela y registra el estado. Solo si esa llamada falla se lee
+ * la transacción directamente para poder mostrar algo al comprador.
+ */
+export async function settleWompi(transactionId: string, env: string | null, orderNumber: string): Promise<Settlement> {
+  try {
+    const r = await shop.confirmPayment({ transactionId, orderNumber });
+    const state = paymentState(r.paymentStatus || r.order?.paymentStatus, r.gatewayStatus);
+    if (state !== 'unknown' || r.order) return { state, canRetry: Boolean(r.canRetry), order: r.order || null };
+  } catch {}
   const host = env === 'test' || !env ? 'https://sandbox.wompi.co' : 'https://production.wompi.co';
   const tx = await fetch(`${host}/v1/transactions/${encodeURIComponent(transactionId)}`)
     .then((r) => r.json())
     .then((j) => j?.data)
     .catch(() => null);
-  if (!tx) return { status: 'UNKNOWN' as const };
-  if (tx.status === 'APPROVED') {
-    await fetch(`${CMS_URL}/api/ecommerce/public/${CMS_SLUG}/payments/wompi/confirm-order`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ transactionId: tx.id, reference: tx.reference, orderNumber }),
-    }).catch(() => {});
-  }
-  return { status: tx.status as string, method: tx.payment_method_type as string, reference: tx.reference as string };
+  const state = tx ? paymentState(undefined, tx.status) : 'unknown';
+  // Sin respuesta del backend no sabemos si admite reintento: se ofrece y el backend decide.
+  return { state, canRetry: state === 'failed', order: null, fallback: true };
+}
+
+/** Abre un nuevo intento de pago y lleva a la pasarela; vuelve a /pedido?orden=<n>. Lanza ShopError (OUT_OF_STOCK, RETRY_LIMIT, 404…). */
+export async function retryPaymentAndGo(orderNumber: string, email?: string) {
+  const back = `${window.location.origin}/pedido?orden=${encodeURIComponent(orderNumber)}`;
+  const r = await shop.retryPayment(orderNumber, { email: email || undefined, redirectUrl: back });
+  if (!r?.checkoutUrl) throw new ShopError(500, 'NO_CHECKOUT_URL', '');
+  const u = new URL(r.checkoutUrl);
+  if (!u.searchParams.get('redirect-url')) u.searchParams.set('redirect-url', back);
+  window.location.href = u.toString();
 }
