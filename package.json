@@ -1,0 +1,29 @@
+{
+  "name": "arsenal-suplementos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Storefront headless de Arsenal Suplementos (Cali) conectado a WebProAI / Latinovation CMS Studio",
+  "scripts": {
+    "dev": "next dev -p 3010",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "cms:build": "node cms/seed/build-manifest.mjs",
+    "cms:pull": "node ../cms-landings/packages/cms-cli/bin/ltn.js pull arsenal --out ./cms",
+    "cms:push": "node ../cms-landings/packages/cms-cli/bin/ltn.js push arsenal --overwrite --publish --file cms/arsenal.snapshot.json"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "lucide-react": "^1.68.0",
+    "next": "^15.5.29",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^5.9.3"
+  }
+}
