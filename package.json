@@ -1,20 +1,24 @@
 {
-  "name": "arsenal-suplementos",
-  "version": "1.0.0",
+  "name": "tusplatos",
+  "version": "2.0.0",
   "private": true,
-  "description": "Storefront headless de Arsenal Suplementos (Cali) conectado a WebProAI / Latinovation CMS Studio",
+  "description": "Storefront headless de TusPlatos (vajillas y cerámica, Cali) sobre @latinovation/cms-client: 100 % editable desde /portal de WebProAI CMS",
   "scripts": {
     "dev": "next dev -p 3010",
     "build": "next build",
     "start": "next start -p 3000",
-    "cms:build": "node cms/seed/build-manifest.mjs",
-    "cms:pull": "node ../cms-landings/packages/cms-cli/bin/ltn.js pull arsenal --out ./cms",
-    "cms:push": "node ../cms-landings/packages/cms-cli/bin/ltn.js push arsenal --overwrite --publish --file cms/arsenal.snapshot.json"
+    "typecheck": "tsc --noEmit",
+    "cms:pull": "node ../cms-landings/packages/cms-cli/bin/ltn.js pull tusplatos --out ./cms",
+    "cms:build": "node cms/seed-tusplatos/build-manifest.mjs",
+    "cms:diff": "node ../cms-landings/packages/cms-cli/bin/ltn.js push tusplatos --dry-run --skip-collections --file cms/tusplatos.snapshot.json",
+    "cms:push": "node ../cms-landings/packages/cms-cli/bin/ltn.js push tusplatos --overwrite --skip-collections --file cms/tusplatos.snapshot.json",
+    "cms:audit": "node node_modules/@latinovation/cms-client/bin/audit-editability.mjs --slug tusplatos --url http://localhost:3010 --item-route /producto/:slug --min 95"
   },
   "engines": {
     "node": ">=20"
   },
   "dependencies": {
+    "@latinovation/cms-client": "file:vendor/latinovation-cms-client-4.1.0.tgz",
     "lucide-react": "^1.68.0",
     "next": "^15.5.29",
     "react": "^19.3.1",

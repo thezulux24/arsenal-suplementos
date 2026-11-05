@@ -1,16 +1,16 @@
 import type { Metadata, Viewport } from 'next';
-import { Hanken_Grotesk, Marcellus } from 'next/font/google';
 import localFont from 'next/font/local';
+import { mediaUrl } from '@latinovation/cms-client';
+import { CmsProvider } from '@latinovation/cms-client/react';
 import './globals.css';
-import { fetchDelivery, SITE_URL, type DeliveryPayload } from '@/lib/cms';
-import { CmsProvider } from '@/components/CmsProvider';
-import { CartProvider } from '@/components/CartProvider';
+import { CMS_SLUG, CMS_URL, getSite, PORTAL_ORIGINS, SITE_URL } from '@/lib/site';
+import { ldScript, organizationLd } from '@/lib/seo';
+import { StoreProvider } from '@/components/StoreProvider';
 import { CartDrawer } from '@/components/CartDrawer';
-import { Footer, Header, ThemeVars, WhatsAppFloat } from '@/components/Shell';
-import { themeStyle } from '@/lib/theme';
+import { QuickView } from '@/components/QuickView';
+import { Footer, Header, WhatsAppFloat } from '@/components/Shell';
 
-const marcellus = Marcellus({ subsets: ['latin'], weight: '400', variable: '--font-marcellus', display: 'swap' });
-// Marcellus draws 1 and 0 like I and O; display digits come from Hanken Grotesk instead.
+// Marcellus dibuja 1 y 0 como I y O: los dígitos del rótulo salen de un subconjunto de Hanken Grotesk.
 const figures = localFont({
   src: './fonts/hanken-figures.woff2',
   variable: '--font-figures',
@@ -20,28 +20,27 @@ const figures = localFont({
   adjustFontFallback: false,
   declarations: [{ prop: 'unicode-range', value: 'U+0030-0039' }],
 });
-const hanken = Hanken_Grotesk({ subsets: ['latin'], variable: '--font-hanken', display: 'swap' });
 
-export const revalidate = 30;
+export const revalidate = 60;
 
 export async function generateMetadata(): Promise<Metadata> {
-  const p = await fetchDelivery();
-  const seo = p?.seo || {};
-  const g = p?.global || {};
-  const title = seo.metaTitle || g.brandName || 'Arsenal Suplementos';
-  const description = seo.metaDescription || g.brandMonogram || '';
+  const p = await getSite();
+  const seo = p.seo || {};
+  const g = p.global || {};
+  const brand = g.brandName || p.project.name || 'TusPlatos';
+  const title = seo.metaTitle || brand;
   return {
     metadataBase: new URL(SITE_URL),
-    title: { default: title, template: `%s · ${g.brandName || 'Arsenal Suplementos'}` },
-    description,
-    icons: { icon: seo.faviconUrl || '/icon.svg' },
+    title: { default: title, template: `%s · ${brand}` },
+    description: seo.metaDescription || g.tagline,
+    icons: { icon: g.faviconUrl ? mediaUrl(g.faviconUrl, CMS_URL) : '/icon.svg' },
     openGraph: {
       title,
-      description,
-      siteName: g.brandName,
+      description: seo.metaDescription || g.tagline,
+      siteName: brand,
       locale: 'es_CO',
       type: 'website',
-      images: seo.ogImage ? [{ url: seo.ogImage }] : undefined,
+      images: seo.ogImage ? [{ url: mediaUrl(seo.ogImage, CMS_URL) }] : undefined,
     },
     robots: seo.robotsIndex === false ? { index: false, follow: false } : { index: true, follow: true },
   };
@@ -53,32 +52,31 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-const EMPTY: DeliveryPayload = {
-  project: { id: '', name: 'Arsenal Suplementos', slug: 'arsenal' },
-  global: {},
-  seo: {},
-  navigation: {},
-  ecommerce: { enabled: true, currency: 'COP', freeShippingThreshold: 0, flatShippingRate: 0 },
-  pages: [],
-  collections: {},
-  collectionDefinitions: {},
-};
-
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const payload = (await fetchDelivery()) || EMPTY;
+  const site = await getSite();
   return (
-    <html lang="es-CO" className={`${figures.variable} ${marcellus.variable} ${hanken.variable}`} style={themeStyle(payload.global)}>
+    <html lang="es-CO" className={figures.variable}>
+      <head>
+        <link rel="preload" href="/fonts/marcellus.woff2" as="font" type="font/woff2" crossOrigin="" />
+        <link rel="preload" href="/fonts/hanken-grotesk.woff2" as="font" type="font/woff2" crossOrigin="" />
+        <link rel="preconnect" href={CMS_URL} />
+      </head>
       <body>
-        <CmsProvider initial={payload}>
-          <CartProvider>
-            <ThemeVars />
+        <a href="#contenido" className="skip">
+          Ir al contenido
+        </a>
+        {/* El provider detecta ?preview=1&builder=1&previewToken=… del portal; para los visitantes no cambia nada. */}
+        <CmsProvider initial={site} slug={CMS_SLUG} cmsUrl={CMS_URL} allowedOrigins={PORTAL_ORIGINS}>
+          <StoreProvider>
             <Header />
             <main id="contenido">{children}</main>
             <Footer />
             <CartDrawer />
+            <QuickView />
             <WhatsAppFloat />
-          </CartProvider>
+          </StoreProvider>
         </CmsProvider>
+        <script type="application/ld+json" dangerouslySetInnerHTML={ldScript(organizationLd(site))} />
       </body>
     </html>
   );

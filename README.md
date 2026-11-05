@@ -1,64 +1,86 @@
-# Arsenal Suplementos · shop.bzuluaga.site
+# TusPlatos · tienda en línea
 
-Tienda en línea de suplementos deportivos y de bienestar con despachos desde Cali. Es un storefront **headless** en Next.js 15: todo el contenido, el catálogo, las fotos, los colores, los pagos y el dominio viven en **WebProAI / Latinovation CMS Studio** (`https://webproai.tech`, proyecto `arsenal`). Este repo solo tiene el código que los pinta.
+Storefront headless de **TusPlatos** (vajillas, platos, tazas y mugs, té y café, bowls y servir, decoración; Cali, Colombia), hecho con Next.js 15 sobre el SDK **`@latinovation/cms-client` 4.1** de WebProAI / Latinovation CMS. Todo lo que se ve —textos, fotos, enlaces, productos, menú, pie, colores y tipografías— vive en el proyecto `tusplatos` del CMS y se edita desde `/portal`.
 
-## Qué se edita en el CMS (sin tocar código)
+- CMS: `https://webproai.tech`, proyecto `tusplatos` (colección `productos`, 47 piezas).
+- Delivery público: `GET https://webproai.tech/api/v1/delivery/tusplatos`.
+- Mundo visual: «estación de azulejos» (ver [DESIGN.md](DESIGN.md)).
 
-Entra a `https://webproai.tech/portal?project=arsenal`:
+## Cómo se edita
 
-| Qué | Dónde en el CMS |
-| --- | --- |
-| Titular, textos de portada, producto destacado y columna lateral | Página **Inicio** → sección `hero` |
-| Paneles por objetivo (texto y foto de cada objetivo) | Inicio → `objetivos` → pestaña Tarjetas |
-| Textos del catálogo, botones, texto de agotado | Inicio → `catalogo` |
-| Pasos de envío, transportadoras, medios de pago | Inicio → `envios` |
-| Bloque de asesoría y formulario (llega a **Leads CRM**) | Inicio → `asesoria` |
-| Preguntas frecuentes | Inicio → `preguntas` → Tarjetas |
-| Textos de la ficha de producto y advertencia legal | Página **Ficha de producto** → `ficha` |
-| Textos del pago y la confirmación | Página **Pago** |
-| Textos del rastreo | Página **Rastreo** |
-| **Productos**: nombre, marca, objetivo, precio, precio antes, presentación, unidades, registro INVIMA, descripción, modo de uso, puntos clave, fotos, inventario, destacado | Colección **Productos** |
-| Objetivos (filtros) | Opciones del campo *Objetivo* de la colección |
-| Marca, anuncio, WhatsApp, horario, pie, nota legal, **colores del sistema de diseño** | Configuración global |
-| Menú y botón de la cabecera | Navegación |
-| Envío plano, envío gratis, transportadoras, Wompi | E-commerce |
-| SEO (título, descripción, imagen) | SEO |
+La tienda usa el SDK de punta a punta:
 
-Los cambios se ven en la tienda al publicar (caché de 30 s). Los pedidos y su estado se gestionan en la pestaña de pedidos del portal; el inventario baja solo cuando Wompi aprueba el pago.
+| Qué | Cómo |
+|---|---|
+| Páginas | `<CmsPage pageSlug>` pinta las secciones del CMS en su orden; cada una queda en `<CmsSection>` (estilos `_style`, anclas, ocultar por dispositivo, barra mover/duplicar/borrar/agregar/Art en el editor). |
+| Bloques | `src/components/blocks/registry.tsx`: claves propias (`categorias`, `catalogo`, `ficha`, `pago`, `confirmacion`, `favoritos`, `buscar`) y **todos los tipos del catálogo** (`hero.*`, `products.catalog`, `content.split`, `features.grid`, `faq.accordion`, `cta.banner`, `gallery.grid`, `testimonials.grid`…). Un bloque que el cliente agregue desde el portal se pinta en azulejo; cualquier otro cae en `GenericSection` (cada campo con su primitivo editable, dentro de una cartela). |
+| Textos, imágenes, enlaces, listas | `CmsText`, `CmsRichText`, `CmsImage` (con `next/image` vía `SmartImage`), `CmsLink`, `CmsList`. |
+| Productos | `CmsItem`, `CmsItemText`, `CmsItemImage`, `CmsAddItem`: nombre, marca, categoría, color, estilo, material, medidas, precio, fotos y descripción se editan en la propia tarjeta o ficha. |
+| Globales y menú | `CmsGlobalText` (marca, anuncio, WhatsApp, horario, textos del carrito, sellos…), `CmsNav` / `CmsNavText` (menú y pie). |
+| Design system | `globalData.designSystem` v2 → variables `--cms-*` → tokens del azulejo (`--cobalt`, `--milk`, `--wash`, `--mustard`…). Cambiar la paleta, las fuentes, el radio de los botones o el movimiento en el portal cambia toda la tienda. |
+| 404 | `globalData.site.notFound` (título, texto, botón). |
 
-## Flujo code-first (agentes IA y desarrolladores)
+Modo editor: el portal carga la tienda en un iframe con `?preview=1&builder=1&previewToken=…`. `next.config.mjs` envía `Content-Security-Policy: frame-ancestors` con el CMS y `NEXT_PUBLIC_PORTAL_ORIGINS`.
 
-El manifiesto del CMS está versionado en `cms/`:
+### Contenido como código
+
+El modelo de contenido está en [`cms/seed-tusplatos/build-manifest.mjs`](cms/seed-tusplatos/build-manifest.mjs) (páginas, secciones con `schema` para el inspector, globales, `globalSchema`, design system, menú, SEO, redirecciones). Los productos no se tocan.
 
 ```bash
-npm run cms:pull    # baja el estado vivo del cliente a cms/arsenal.snapshot.json
-npm run cms:build   # regenera el manifiesto desde cms/seed/*.json (productos, textos, esquemas)
-npm run cms:push    # ltn push arsenal --overwrite --publish
+npm run cms:pull      # ltn pull tusplatos --out ./cms  (snapshot actual, incluye productos)
+npm run cms:build     # reescribe páginas/globales/menú/SEO en cms/tusplatos.snapshot.json
+npm run cms:diff      # ltn push --dry-run --skip-collections
+npm run cms:push      # ltn push --overwrite --skip-collections (crea respaldo y queda en vivo)
 ```
 
-Haz siempre `cms:pull` antes de `cms:push`: el push es autoritativo y reemplaza lo que el cliente editó (el CMS guarda un respaldo en Revisiones).
+Requiere `CMS_API_TOKEN` en el entorno y el monorepo del CMS en `../cms-landings`.
 
-Los scripts asumen el repo del CMS clonado al lado (`../cms-landings`).
+### Auditoría de editabilidad
+
+```bash
+npm run build && npx next start -p 3010
+npm run cms:audit     # bin/audit-editability.mjs --slug tusplatos --url http://localhost:3010 --item-route /producto/:slug --min 95
+```
+
+Resultado actual: **328/344 = 95,3 %**. Lo que falta son textos que solo aparecen en un estado (pago aprobado/rechazado, sin resultados, pago en línea mientras la pasarela no tenga llave pública).
+
+## Tienda
+
+- `/tienda`: búsqueda al instante, filtros (categoría, estilo, color con muestras, material, marca, rango de precio, piezas, puestos, hecho en Colombia, pintado a mano, microondas, lavavajillas, en oferta, disponible) con conteos por faceta (`queryCollection` del SDK), chips activos, limpiar todo, orden (relevancia, precio ↑↓, novedades, nombre), cuadrícula/lista, «cargar más», estado en la URL (`?categoria=Vajillas&color=Azul&precio=20000-150000…`) y cajón de filtros en móvil. Los filtros se configuran en la sección `catalogo` de `/tienda` (campo `filters`).
+- `/categoria/<slug>`: landing estática por categoría.
+- `/producto/<slug>`: galería con miniaturas y zoom (cursor o toque), fotos de ambiente, variantes si existen, cantidad, stock, entrega y pagos, detalles, descripción, cuidados, «Completa tu mesa», relacionados, migas y botón fijo en móvil. JSON-LD `Product`/`Offer`/`BreadcrumbList`, OG con las fotos del producto.
+- Vista rápida, favoritos (`/favoritos`, localStorage), vistos recientemente, buscador con sugerencias en la cabecera y `/buscar`.
+- Carrito en cajón con barra de envío gratis, cantidades, quitar y nota del pedido.
+- `/checkout` contra `POST /api/ecommerce/public/tusplatos/checkout` (el servidor recalcula precios y stock). Solo muestra los medios de pago que la tienda tiene activos (`/config`): pago en línea únicamente si la pasarela tiene llave pública. `/pedido` confirma (y lee el resultado de la pasarela), `/rastreo` sigue el pedido.
+- `sitemap.xml`, `robots.txt`, JSON-LD `Store`, 404 del CMS, `/api/revalidate` para el webhook de publicación.
 
 ## Desarrollo
 
 ```bash
-cp .env.example .env.local
 npm install
-npm run dev   # http://localhost:3010
+npm run dev          # http://localhost:3010
+npm run typecheck
+npm run build
 ```
 
-## Despliegue
+Variables: ver [`.env.example`](.env.example).
 
-Coolify (VPS del CMS) construye el `Dockerfile` desde `main` y sirve el puerto 3000 en `https://shop.bzuluaga.site`.
+### Actualizar el SDK
 
-DNS: registro **A** `shop` → `179.236.72.201` en la zona de `bzuluaga.site`.
+El SDK vive en `cms-landings/packages/cms-client` y se instala como tarball versionado en `vendor/` (así la imagen de Docker no necesita el monorepo):
 
-## Vista previa en el editor
+```bash
+cd ../cms-landings/packages/cms-client && npm pack          # → latinovation-cms-client-4.1.0.tgz
+mv latinovation-cms-client-*.tgz ../../../tienda-bienestar/vendor/
+cd ../../../tienda-bienestar && npm install ./vendor/latinovation-cms-client-4.1.0.tgz
+git add vendor package.json package-lock.json
+```
 
-La tienda entiende el protocolo del editor del CMS: con `?preview=1` lee borradores, y dentro del iframe del portal recibe `CMS_LIVE_PREVIEW_STATE`, marca las secciones con `data-section-key` y permite editar textos en línea (`INLINE_FIELD_CHANGE`).
+## Despliegue (Coolify)
 
-## Fuentes
+Dockerfile multi-etapa (`output: 'standalone'`), copia `vendor/` antes de `npm ci`. Build args: `NEXT_PUBLIC_CMS_URL`, `NEXT_PUBLIC_CMS_SLUG=tusplatos`, `NEXT_PUBLIC_SITE_URL` (dominio público de la tienda), `NEXT_PUBLIC_PORTAL_ORIGINS`. Variable de ejecución: `CMS_WEBHOOK_SECRET`. Puerto 3000.
 
-- Productos, precios de referencia (COP, noviembre de 2026), registros sanitarios y fotografías de producto: catálogo público de Locatel Colombia y cada fabricante. Revisa precios e inventario antes de vender.
-- Tipografías: Marcellus y Hanken Grotesk (Google Fonts, autoalojadas por Next.js).
+Después de desplegar:
+1. Poner el dominio de la tienda en `productionUrl` del proyecto o agregarlo como dominio (`ltn domains add tusplatos --domain …`), para que el regreso de la pasarela a `/pedido` sea aceptado.
+2. Configurar `webhookUrl = https://<tienda>/api/revalidate` y el mismo secreto (SUPERADMIN).
+3. Cargar la llave pública e integridad de la pasarela en la tienda (`ltn shop config set tusplatos …`) para activar el pago en línea.

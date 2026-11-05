@@ -1,8 +1,14 @@
 import type { Metadata } from 'next';
-import { OrderConfirmation } from '@/components/OrderViews';
+import { SitePage } from '@/components/blocks/registry';
+import { getSite } from '@/lib/site';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = { title: 'Pedido', robots: { index: false } };
+export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return { ...pageMetadata(await getSite(), '/pedido'), robots: { index: false } };
+}
 
 export default function Page() {
-  return <OrderConfirmation />;
+  return <SitePage pageSlug="/pedido" />;
 }

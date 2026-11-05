@@ -1,8 +1,14 @@
 import type { Metadata } from 'next';
-import { TrackView } from '@/components/OrderViews';
+import { SitePage } from '@/components/blocks/registry';
+import { getSite } from '@/lib/site';
+import { pageMetadata } from '@/lib/seo';
 
-export const metadata: Metadata = { title: 'Rastrear pedido' };
+export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return { ...pageMetadata(await getSite(), '/rastreo'), robots: { index: false } };
+}
 
 export default function Page() {
-  return <TrackView />;
+  return <SitePage pageSlug="/rastreo" />;
 }
