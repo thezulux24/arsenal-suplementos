@@ -1804,6 +1804,7 @@ legend {
 .form-frame {
   padding: clamp(24px, 3.4vw, 44px);
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 18px;
 }
 .form-frame > .plaque {
@@ -2930,6 +2931,8 @@ legend {
 .checkout__form {
   padding: clamp(24px, 3.4vw, 44px);
   display: grid;
+  /* Una sola pista que no crece con el contenido (si no, en 390px los campos se salen de la cartela). */
+  grid-template-columns: minmax(0, 1fr);
   gap: 26px;
 }
 .checkout__summary {
@@ -3004,6 +3007,7 @@ legend {
 .status-tile {
   padding: clamp(28px, 4vw, 52px);
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 18px;
   max-width: 760px;
   margin-bottom: var(--band-y);
@@ -3327,4 +3331,551 @@ html[data-cms-builder] .card__quick {
 /* El runtime del editor lee innerText: sin esto, las mayúsculas de CSS quedarían guardadas en el CMS. */
 html[data-cms-builder] [contenteditable] {
   text-transform: none !important;
+}
+
+/* ───────────── Estados con `hidden` ─────────────
+   Las vistas por estado (pago aprobado/rechazado, pestañas, mensajes) se pintan en el servidor y se
+   ocultan con el atributo; las clases con display propio (.plaque, .form-msg…) no deben ganarle. */
+[hidden] {
+  display: none !important;
+}
+
+/* ───────────── Controles de formulario ───────────── */
+.pw {
+  position: relative;
+}
+.field .pw input {
+  padding-right: 52px;
+}
+.pw__toggle {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  background: transparent;
+  color: var(--cobalt);
+  cursor: pointer;
+  transition: background-color var(--t-fast) var(--ease-out);
+}
+.pw__toggle svg {
+  width: 18px;
+  height: 18px;
+}
+.pw__toggle[aria-pressed='true'] {
+  background: var(--wash);
+}
+@media (hover: hover) {
+  .pw__toggle:hover {
+    background: var(--wash);
+  }
+}
+.check {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-height: 24px;
+  font-size: 14.5px;
+  line-height: 1.45;
+  cursor: pointer;
+}
+.check input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.check__box {
+  position: relative;
+  flex: none;
+  width: 20px;
+  height: 20px;
+  margin-top: 1px;
+  border: 1px solid var(--cobalt);
+  background: var(--tile-white);
+  transition: background-color var(--t-fast) var(--ease-out);
+}
+.check input:checked + .check__box {
+  background: var(--cobalt);
+}
+.check input:checked + .check__box::after {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 11px;
+  border-right: 2px solid var(--on-cobalt);
+  border-bottom: 2px solid var(--on-cobalt);
+  transform: rotate(45deg);
+}
+.check input:focus-visible + .check__box {
+  outline: 2px solid var(--cobalt);
+  outline-offset: 2px;
+}
+.check input:user-invalid + .check__box {
+  border-color: var(--sale);
+  box-shadow: inset 0 0 0 1px var(--sale);
+}
+.check .textlink {
+  display: inline;
+  color: var(--cobalt);
+  text-decoration: underline;
+}
+.field input.is-readonly {
+  background: var(--milk);
+  color: var(--muted);
+}
+.plaque--danger {
+  --pl-bg: var(--sale);
+}
+@media (hover: hover) {
+  .plaque--danger:hover {
+    --pl-bg: color-mix(in oklab, var(--sale) 82%, black);
+  }
+}
+.plaque--danger:disabled {
+  --pl-bg: color-mix(in oklab, var(--sale) 35%, var(--milk));
+}
+.acct-link {
+  justify-self: start;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  color: var(--cobalt);
+  font-size: 14.5px;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ───────────── Cabecera: cuenta ───────────── */
+.account-btn.is-in {
+  width: auto;
+  display: inline-flex;
+  gap: 6px;
+  padding: 0 10px;
+}
+.account-btn__name {
+  max-width: 10ch;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 13.5px;
+}
+/* En el teléfono la búsqueda queda en el menú (que la trae arriba): la cuenta ocupa su lugar en la cabecera. */
+@media (max-width: 520px) {
+  .header__actions .header__search-btn {
+    display: none;
+  }
+}
+/* El nombre solo cuando sobra espacio; el nombre accesible lo lleva siempre (aria-label). */
+@media (max-width: 1360px) {
+  .account-btn.is-in {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+  .account-btn__name {
+    display: none;
+  }
+}
+
+/* ───────────── Cuenta de cliente ───────────── */
+.acct {
+  padding-bottom: var(--band-y);
+}
+.acct--entry .acct-entry {
+  max-width: 560px;
+  padding: clamp(30px, 4vw, 44px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 22px;
+}
+/* Mientras se comprueba la sesión guardada no se pinta el formulario (evita el destello para quien ya entró). */
+.acct-entry[data-state='loading'] > :not(.fleuron) {
+  visibility: hidden;
+}
+html[data-cms-builder] .acct-entry[data-state='loading'] > :not(.fleuron) {
+  visibility: visible;
+}
+.acct-tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1px;
+  background: var(--grout);
+  border: 1px solid var(--grout);
+}
+.acct-tabs button {
+  min-height: 52px;
+  padding: 0 12px;
+  border: 0;
+  background-color: var(--tile-white);
+  background-image: linear-gradient(var(--wash), var(--wash));
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 100% 0;
+  color: var(--cobalt);
+  font-family: var(--font-display);
+  font-size: 14px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-size var(--t-wash) var(--ease-out), color var(--t-fast) var(--ease-out);
+}
+@media (hover: hover) {
+  .acct-tabs button:hover {
+    background-size: 100% 100%;
+  }
+}
+.acct-tabs button[aria-selected='true'] {
+  background: var(--cobalt);
+  color: var(--on-cobalt);
+  box-shadow: inset 0 0 0 3px var(--cobalt), inset 0 0 0 4px color-mix(in oklab, var(--on-cobalt) 55%, transparent);
+}
+.acct-tabs button:focus-visible,
+.acct-nav__link:focus-visible {
+  outline: 2px solid var(--mustard);
+  outline-offset: -6px;
+}
+.acct-panel,
+.acct-form {
+  display: grid;
+  gap: 18px;
+}
+.acct-form p {
+  margin: 0;
+}
+
+.acct-bar {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 12px 20px;
+  margin-bottom: 28px;
+}
+.acct-bar__hello {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  letter-spacing: 0.05em;
+  color: var(--cobalt);
+}
+.acct-nav {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 620px;
+}
+.acct-nav__link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 52px;
+  padding: 6px 10px;
+  color: var(--cobalt);
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-align: center;
+  text-decoration: none;
+  line-height: 1.2;
+  background-color: var(--tile-white);
+  background-image: linear-gradient(var(--wash), var(--wash));
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 100% 0;
+  transition: background-size var(--t-wash) var(--ease-out);
+}
+.acct-nav__link svg {
+  width: 17px;
+  height: 17px;
+  flex: none;
+}
+@media (hover: hover) {
+  .acct-nav__link:hover {
+    background-size: 100% 100%;
+  }
+}
+.acct-nav__link[aria-current='page'] {
+  background: var(--cobalt);
+  color: var(--on-cobalt);
+}
+@media (max-width: 760px) {
+  .acct-bar {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .acct-nav {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    max-width: none;
+  }
+  .acct-nav__link {
+    flex-direction: column;
+    gap: 4px;
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
+    min-height: 60px;
+  }
+}
+
+.acct-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px 16px;
+}
+.acct-toolbar p {
+  margin: 0;
+}
+.acct-orders,
+.acct-addresses {
+  display: grid;
+  gap: 18px;
+}
+.acct-orders > .plaque,
+.acct-orders > .empty,
+.acct-addresses > .empty,
+.acct-orders > p,
+.acct-addresses > p {
+  justify-self: start;
+  margin: 0;
+}
+.acct-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  grid-template-columns: minmax(0, 1fr);
+}
+.acct-list > li {
+  padding: 18px clamp(16px, 2.4vw, 24px);
+  display: grid;
+  gap: 12px;
+  align-content: start;
+}
+@media (min-width: 761px) {
+  .acct-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (min-width: 1101px) {
+  .acct-list--grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+.order-tile__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 12px;
+}
+.order-tile__code,
+.address-tile__name {
+  font-family: var(--font-display);
+  font-size: 1.08rem;
+  letter-spacing: 0.06em;
+  color: var(--cobalt);
+  overflow-wrap: anywhere;
+}
+.order-tile__meta {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.acct-list p {
+  margin: 0;
+}
+.order-tile__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+.order-thumbs {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: 1px;
+  background: var(--grout);
+  border: 1px solid var(--grout);
+  justify-self: start;
+}
+.order-thumbs li {
+  width: 52px;
+  height: 52px;
+  background: var(--tile-white);
+  display: grid;
+  place-items: center;
+}
+.order-thumbs img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 4px;
+  mix-blend-mode: multiply;
+}
+.order-thumbs__more {
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--cobalt);
+}
+.address-tile.is-default {
+  box-shadow: inset 0 0 0 2px var(--cobalt);
+}
+.address-tile__body {
+  display: grid;
+  gap: 2px;
+  font-style: normal;
+  font-size: 14.5px;
+  overflow-wrap: anywhere;
+}
+.address-tile__confirm {
+  display: grid;
+  gap: 10px;
+  padding: 12px;
+  background: color-mix(in oklab, var(--sale) 6%, var(--tile-white));
+  border: 1px solid color-mix(in oklab, var(--sale) 45%, var(--tile-white));
+}
+.address-tile__confirm p {
+  color: var(--sale);
+  font-size: 14.5px;
+}
+.acct-address-form {
+  max-width: 760px;
+}
+.acct-address-form .fieldset-title {
+  margin: 0;
+}
+.acct-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
+  gap: clamp(20px, 3vw, 40px);
+  align-items: start;
+}
+.acct-stack {
+  display: grid;
+  gap: clamp(20px, 3vw, 32px);
+}
+.acct-grid > *,
+.acct-stack > *,
+.order-result > * {
+  min-width: 0;
+}
+/* Rótulos largos ("Cerrar sesión en todos los dispositivos") parten en dos líneas en vez de desbordar. */
+.acct .plaque,
+.order-result .plaque {
+  white-space: normal;
+  text-align: center;
+  line-height: 1.25;
+  padding-block: 8px;
+}
+.acct-grid .form-frame > .plaque {
+  justify-self: start;
+}
+.acct-grid .fieldset-title,
+.acct-grid p {
+  margin: 0;
+}
+@media (max-width: 900px) {
+  .acct-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* ───────────── Checkout con cuenta ───────────── */
+.checkout__account {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  padding: 12px 14px;
+  background: var(--wash);
+  border: 1px solid color-mix(in oklab, var(--cobalt) 30%, var(--wash));
+  font-size: 14.5px;
+}
+.checkout__account svg {
+  width: 18px;
+  height: 18px;
+  flex: none;
+  color: var(--cobalt);
+}
+.checkout__account .textlink {
+  color: var(--cobalt);
+  text-decoration: underline;
+}
+.saved-addresses {
+  display: grid;
+  gap: 8px;
+}
+.saved-addresses p {
+  margin: 0;
+}
+
+/* ───────────── Resultado del pedido ───────────── */
+.order-result {
+  display: grid;
+  gap: clamp(20px, 3vw, 40px);
+  align-items: start;
+  padding-bottom: var(--band-y);
+}
+.order-result .status-tile {
+  margin: 0;
+}
+@media (min-width: 1000px) {
+  .order-result--claim {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  }
+}
+.order-result .status-tile p,
+.track__failed p {
+  margin: 0;
+}
+.order-lines {
+  margin: 0;
+}
+.order-lines .line {
+  grid-template-columns: 60px minmax(0, 1fr);
+}
+.retry {
+  display: grid;
+  gap: 12px;
+  max-width: 420px;
+}
+.retry .plaque {
+  justify-self: start;
+}
+.claim {
+  max-width: 560px;
+}
+.claim .fieldset-title {
+  margin: 0;
+}
+.claim__body {
+  display: grid;
+  gap: 16px;
+}
+.claim__body p {
+  margin: 0;
+}
+.claim__body > .plaque {
+  justify-self: start;
+}
+.claim__email {
+  font-size: 14.5px;
+  color: var(--ink);
+}
+.track__failed {
+  display: grid;
+  gap: 14px;
+  justify-items: start;
 }

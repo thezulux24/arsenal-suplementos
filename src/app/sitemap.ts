@@ -12,7 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const site = await getSite();
   const now = new Date();
   const pages = site.pages
-    .filter((p) => !PRIVATE.has(p.slug))
+    .filter((p) => !PRIVATE.has(p.slug) && !p.slug.startsWith('/cuenta'))
     .map((p) => ({ url: abs(p.slug), lastModified: now, changeFrequency: 'weekly' as const, priority: p.slug === '/' ? 1 : 0.7 }));
   const cats = categoryList(site).map((c) => ({ url: abs(`/categoria/${c.slug}`), lastModified: now, changeFrequency: 'weekly' as const, priority: 0.7 }));
   const products = getProducts(site).map((p) => ({

@@ -30,6 +30,8 @@ type StoreCtx = {
   setQty: (key: string, qty: number) => void;
   remove: (key: string) => void;
   clear: () => void;
+  /** Vuelve a poner líneas guardadas (p. ej. el carrito de un pago rechazado); no duplica las que ya están. */
+  restore: (lines: CartLine[], notes?: string) => void;
   favorites: string[];
   isFavorite: (slug: string) => boolean;
   toggleFavorite: (slug: string) => void;
@@ -132,6 +134,21 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     setLines([]);
     setNotes('');
   }, []);
+  const restore = useCallback((saved: CartLine[], savedNotes?: string) => {
+    if (!Array.isArray(saved) || !saved.length) return;
+    setLines((prev) => {
+      const next = [...prev];
+      for (const l of saved) {
+        if (!l || !l.key || !(l.quantity > 0)) continue;
+        const max = typeof l.stock === 'number' && l.stock > 0 ? l.stock : 99;
+        const i = next.findIndex((x) => x.key === l.key);
+        if (i >= 0) next[i] = { ...next[i], quantity: Math.min(max, Math.max(next[i].quantity, l.quantity)) };
+        else next.push({ ...l, quantity: Math.min(max, l.quantity) });
+      }
+      return next;
+    });
+    if (savedNotes) setNotes((n) => n || savedNotes);
+  }, []);
   const toggleFavorite = useCallback((slug: string) => setFavorites((f) => (f.includes(slug) ? f.filter((x) => x !== slug) : [slug, ...f])), []);
   const markViewed = useCallback((slug: string) => setRecent((r) => [slug, ...r.filter((x) => x !== slug)].slice(0, 12)), []);
 
@@ -151,6 +168,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       setQty,
       remove,
       clear,
+      restore,
       favorites,
       isFavorite: (slug: string) => favorites.includes(slug),
       toggleFavorite,
@@ -160,7 +178,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
       openQuickView: setQuickView,
       ready,
     };
-  }, [lines, notes, cartOpen, pulse, add, setQty, remove, clear, favorites, toggleFavorite, recent, markViewed, quickView, ready]);
+  }, [lines, notes, cartOpen, pulse, add, setQty, remove, clear, restore, favorites, toggleFavorite, recent, markViewed, quickView, ready]);
 
   return (
     <Ctx.Provider value={value}>

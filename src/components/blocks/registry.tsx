@@ -6,6 +6,7 @@ import { AlternatingRows, CategoryWall, CtaBanner, Faq, FeatureTiles, Hero, News
 import { Catalog, ShopRouteContext, type ShopRoute } from './catalog';
 import { ProductDetail, ProductSlugContext } from './product';
 import { Checkout, Confirmation, ContactForm, Favorites, SearchPage, StoreConfigContext, Tracking, type StoreConfig } from './pages';
+import { AccountAddresses, AccountAuth, AccountOrders, AccountProfile, AccountReset } from './account';
 import { Announcement, GalleryTiles, GenericSection, Hours, Locations, Logos, MediaImage, Quotes, RichBlock, StatTiles, Team, Video } from './generic';
 
 /**
@@ -23,6 +24,12 @@ export const registry: CmsRegistry = {
   confirmacion: Confirmation,
   favoritos: Favorites,
   buscar: SearchPage,
+  // cuentas de cliente
+  cuenta: AccountAuth,
+  mis_pedidos: AccountOrders,
+  mis_direcciones: AccountAddresses,
+  mis_datos: AccountProfile,
+  restablecer: AccountReset,
   // tipos del catálogo de bloques
   hero: Hero,
   'products.catalog': ProductShelf,
@@ -49,17 +56,7 @@ export const registry: CmsRegistry = {
   'team.grid': Team,
 };
 
-export function SitePage({
-  pageSlug,
-  shop,
-  productSlug = '',
-  storeConfig = null,
-}: {
-  pageSlug: string;
-  shop?: ShopRoute;
-  productSlug?: string;
-  storeConfig?: StoreConfig | null;
-}) {
+export function SitePage({ pageSlug, shop, productSlug = '', storeConfig = null }: { pageSlug: string; shop?: ShopRoute; productSlug?: string; storeConfig?: StoreConfig | null }) {
   return (
     <ShopRouteContext.Provider value={shop || { params: {} }}>
       <ProductSlugContext.Provider value={productSlug}>

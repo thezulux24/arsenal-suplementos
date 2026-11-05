@@ -3,10 +3,12 @@
 import React, { useEffect, useId, useMemo, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { Heart, Menu, Search, ShoppingBag, X } from 'lucide-react';
+import { Heart, Menu, Search, ShoppingBag, UserRound, X } from 'lucide-react';
 import { getProducts, mediaUrl } from '@latinovation/cms-client';
 import { CmsGlobalImage, CmsGlobalText, CmsNav, CmsNavText, useCms, useGlobal, useNavLinks } from '@latinovation/cms-client/react';
 import { useStore } from './StoreProvider';
+import { useAccount } from './AccountProvider';
+import { firstName } from '@/lib/account';
 import { Frieze, WhatsAppIcon } from './Ornaments';
 import { CMS_SLUG, CMS_URL } from '@/lib/site';
 import { formatCop, waLink } from '@/lib/format';
@@ -59,7 +61,11 @@ export function SearchBox({ id, onDone, autoFocus = false }: { id?: string; onDo
   const listId = useId();
   const products = useMemo(() => getProducts(payload), [payload]);
   const cats = useMemo(() => categoryList(payload), [payload]);
-  const norm = (s: unknown) => String(s ?? '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '');
+  const norm = (s: unknown) =>
+    String(s ?? '')
+      .toLowerCase()
+      .normalize('NFD')
+      .replace(/[̀-ͯ]/g, '');
   const words = norm(q).trim().split(/\s+/).filter(Boolean);
   const hits = words.length
     ? products.filter((p) => {
@@ -197,6 +203,7 @@ export function Header() {
               <CmsGlobalText f="favoritesLabel" className="sr-only" />
               {ready && favorites.length ? <span className="icon-btn__count">{favorites.length}</span> : null}
             </Link>
+            <AccountLink />
             <button type="button" className={`plaque plaque--small cart-btn${pulsing ? ' is-pulsing' : ''}`} onClick={() => setCartOpen(true)} aria-label={`${cartLabel}, ${count}`}>
               <ShoppingBag aria-hidden="true" />
               <CmsGlobalText f="cartLabel" className="cart-btn__label" />
@@ -229,6 +236,26 @@ export function Header() {
         </div>
       ) : null}
     </>
+  );
+}
+
+/** Cuenta del cliente junto a favoritos y carrito; con sesión muestra el primer nombre. Sin cuentas activas, nada. */
+function AccountLink() {
+  const { enabled, customer } = useAccount();
+  const label = useGlobal<string>('accountLabel', '');
+  if (!enabled) return null;
+  const name = firstName(customer?.name);
+  return (
+    <Link href={customer ? '/cuenta/pedidos' : '/cuenta'} className={`icon-btn account-btn${name ? ' is-in' : ''}`} title={label} aria-label={name ? `${label}: ${name}` : label}>
+      <UserRound aria-hidden="true" />
+      {name ? (
+        <span className="account-btn__name" aria-hidden="true">
+          {name}
+        </span>
+      ) : (
+        <CmsGlobalText f="accountLabel" className="sr-only" />
+      )}
+    </Link>
   );
 }
 
