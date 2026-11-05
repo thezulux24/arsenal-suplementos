@@ -1,16 +1,20 @@
-# Arsenal Suplementos · storefront Next.js (standalone) para Coolify
+# TusPlatos · storefront Next.js (standalone) para Coolify
 FROM node:22-alpine AS deps
 WORKDIR /app
+# El SDK @latinovation/cms-client va empaquetado en vendor/ (npm pack del monorepo del CMS):
+# tiene que estar en la imagen antes de npm ci.
 COPY package.json package-lock.json ./
+COPY vendor/ ./vendor/
 RUN npm ci
 
 FROM node:22-alpine AS build
 WORKDIR /app
 ENV NEXT_TELEMETRY_DISABLED=1
 ARG NEXT_PUBLIC_CMS_URL=https://webproai.tech
-ARG NEXT_PUBLIC_CMS_SLUG=arsenal
-ARG NEXT_PUBLIC_SITE_URL=https://shop.bzuluaga.site
-ENV NEXT_PUBLIC_CMS_URL=$NEXT_PUBLIC_CMS_URL NEXT_PUBLIC_CMS_SLUG=$NEXT_PUBLIC_CMS_SLUG NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL
+ARG NEXT_PUBLIC_CMS_SLUG=tusplatos
+ARG NEXT_PUBLIC_SITE_URL=https://tusplatos.webproai.tech
+ARG NEXT_PUBLIC_PORTAL_ORIGINS=
+ENV NEXT_PUBLIC_CMS_URL=$NEXT_PUBLIC_CMS_URL NEXT_PUBLIC_CMS_SLUG=$NEXT_PUBLIC_CMS_SLUG NEXT_PUBLIC_SITE_URL=$NEXT_PUBLIC_SITE_URL NEXT_PUBLIC_PORTAL_ORIGINS=$NEXT_PUBLIC_PORTAL_ORIGINS
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 RUN npm run build
