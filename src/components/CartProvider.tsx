@@ -36,6 +36,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   const [pulse, setPulse] = useState(0);
   const [ready, setReady] = useState(false);
+  const [toast, setToast] = useState('');
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(''), 2400);
+    return () => clearTimeout(t);
+  }, [toast]);
 
   useEffect(() => {
     try {
@@ -75,6 +82,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       ];
     });
     setPulse((n) => n + 1);
+    setToast(`Agregado al carrito: ${p.title}`);
   }, []);
 
   const setQty = useCallback((productId: string, qty: number) => {
@@ -97,7 +105,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     return { lines, count, subtotal, open, pulse, setOpen, add, setQty, remove, clear };
   }, [lines, open, pulse, add, setQty, remove, clear]);
 
-  return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
+  return (
+    <Ctx.Provider value={value}>
+      {children}
+      <div className={`toast${toast ? ' is-on' : ''}`} role="status" aria-live="polite">
+        {toast}
+        {toast ? (
+          <button type="button" className="toast__link" onClick={() => { setOpen(true); setToast(''); }}>
+            Ver carrito
+          </button>
+        ) : null}
+      </div>
+    </Ctx.Provider>
+  );
 }
 
 export function useCart() {

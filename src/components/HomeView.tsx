@@ -58,14 +58,13 @@ function Hero({ bySlug, products }: { bySlug: Map<string, Product>; products: Pr
   return (
     <Section s={s} className="hero" label="Portada">
       <div className="wrap">
+        <Frieze className="frieze--thin wall__frieze" />
         <div className="wall">
           <Frame className="wall__cartouche" tone="mustard">
-            <T s={s} f="cartoucheCaption" className="wall__caption" />
             <T s={s} f="headline" as="h1" />
             <T s={s} f="subheadline" as="p" className="lede" />
             <div className="wall__actions">
-              {featured ? <AddButton product={featured} label={d.primaryCtaText || 'Agregar al carrito'} className="plaque" /> : null}
-              <a href="#catalogo" className="plaque plaque--ghost">
+              <a href="#catalogo" className="plaque">
                 {d.secondaryCtaText || 'Ver el catálogo'}
                 <ArrowRight />
               </a>
@@ -85,11 +84,15 @@ function Hero({ bySlug, products }: { bySlug: Map<string, Product>; products: Pr
               </Link>
               <div className="featured__plate">
                 <div style={{ minWidth: 0 }}>
-                  <span className="card__brand">{featured.brand}</span>
                   <h2>{featured.title}</h2>
-                  <span className="card__pres">{featured.presentation}</span>
+                  <span className="card__pres">
+                    {[featured.brand, featured.presentation].filter(Boolean).join(' · ')}
+                  </span>
                 </div>
-                <Price p={featured} big />
+                <div className="featured__buy">
+                  <Price p={featured} big />
+                  <AddButton product={featured} label={d.primaryCtaText || 'Agregar al carrito'} className="plaque" />
+                </div>
               </div>
             </div>
           ) : null}
@@ -109,6 +112,7 @@ function Hero({ bySlug, products }: { bySlug: Map<string, Product>; products: Pr
             </div>
           ))}
         </div>
+        <Frieze className="frieze--thin wall__frieze" />
       </div>
     </Section>
   );
@@ -151,12 +155,13 @@ function Goals({
           <T s={s} f="heading" as="h2" />
           <T s={s} f="intro" as="p" className="lede" />
         </div>
-        <div className="tiles goals">
-          {panels.map((pn) => (
+        <Frame className="goals-frame" tone="mustard">
+        <div className={`tiles goals${active ? ' has-active' : ''}`}>
+          {panels.map((pn, i) => (
             <button
               type="button"
               key={pn.name}
-              className={`goal${active === pn.name ? ' is-active' : ''}`}
+              className={`goal${i === 0 ? ' goal--lead' : ''}${active === pn.name ? ' is-active' : ''}`}
               onClick={() => onPick(pn.name)}
               aria-pressed={active === pn.name}
             >
@@ -181,7 +186,9 @@ function Goals({
               </span>
             </a>
           ) : null}
+          <span className="blank-tile goals__blank" aria-hidden="true" />
         </div>
+        </Frame>
       </div>
     </Section>
   );

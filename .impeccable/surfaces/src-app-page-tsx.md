@@ -23,7 +23,7 @@ STORY: The visitor sees the hall's name cartouche, understands it is a Cali supp
 
 FIRST VIEWPORT: A full-width tile wall framed by a frieze: a cartouche spanning six tiles carries the h1 and the hard fact (shipping from Cali, registration on every product); a 3x3 tile panel holds the featured product with price and a working Agregar plaque; a column of single tiles shows three more products, each addable. Primary action: Agregar al carrito on the featured panel.
 
-FORM: Azulejo station hall, the user's adopted challenger (catalog id architecture-places-azulejo-station-hall); code-led. seed: 63b85a731a39e74a
+FORM: Azulejo station hall, the user's adopted challenger (catalog id architecture-places-azulejo-station-hall); code-led. seed:63b85a731a39e74a
 
 FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
 

@@ -124,11 +124,16 @@ h3 {
 }
 
 h1 {
-  font-size: clamp(2.25rem, 1.2rem + 3.4vw, 4.4rem);
+  font-size: clamp(2rem, 1.1rem + 2.9vw, 3.9rem);
+  text-transform: uppercase;
+  letter-spacing: 0.035em;
+  line-height: 1.04;
 }
 
 h2 {
-  font-size: clamp(1.9rem, 1.2rem + 2.2vw, 3.2rem);
+  font-size: clamp(1.65rem, 1.1rem + 1.8vw, 2.75rem);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 h3 {
@@ -473,7 +478,7 @@ p {
   min-width: 22px;
   height: 22px;
   padding: 0 6px;
-  background: var(--mustard);
+  background: var(--wash);
   color: var(--ink);
   font-family: var(--font-body);
   font-weight: 700;
@@ -625,7 +630,7 @@ p {
   background-image:
     linear-gradient(color-mix(in oklab, var(--cobalt) 13%, transparent) 1px, transparent 1px),
     linear-gradient(90deg, color-mix(in oklab, var(--cobalt) 13%, transparent) 1px, transparent 1px);
-  background-size: 25% 25%;
+  background-size: 33.333% 33.333%;
   background-position: -1px -1px;
 }
 
@@ -635,6 +640,7 @@ p {
 
 .featured__plate {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
@@ -644,10 +650,106 @@ p {
 }
 
 .featured__plate h2 {
-  font-size: clamp(1.05rem, 0.9rem + 0.5vw, 1.35rem);
+  font-size: clamp(1rem, 0.85rem + 0.45vw, 1.25rem);
+  letter-spacing: 0.06em;
+}
+
+.featured__buy {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex: none;
+}
+
+.wall__frieze {
+  margin-block: 0;
+}
+
+.pending {
+  color: var(--muted);
+  font-style: italic;
+}
+
+/* seams run behind every packshot: white packshots multiply onto the grout */
+.tile-seams {
+  background-image:
+    linear-gradient(color-mix(in oklab, var(--cobalt) 11%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in oklab, var(--cobalt) 11%, transparent) 1px, transparent 1px);
+  background-size: 33.333% 33.333%;
+  background-position: -1px -1px;
+}
+
+.goals-frame {
+  padding: 18px;
+}
+
+.goal--lead {
+  grid-column: span 2;
+  grid-row: span 2;
+}
+
+.goals .goal--lead {
+  grid-template-rows: 1fr auto;
+}
+
+.goal--lead .goal__photo {
+  aspect-ratio: auto;
+  min-height: 300px;
+}
+
+.goal--lead .goal__photo img {
+  padding: 8% 18% 2%;
+}
+
+.goal--lead .goal__name {
+  font-size: clamp(1.5rem, 1.1rem + 1vw, 2.1rem);
+}
+
+.goals.has-active .goal:not(.is-active):not(.goal--ask) {
+  opacity: 0.55;
+}
+
+.goals .goal {
+  transition: background-size var(--t-wash) var(--ease-out), opacity var(--t-wash) var(--ease-out);
+}
+
+.goals .goal.is-active {
+  box-shadow: inset 0 0 0 2px var(--cobalt);
+}
+
+.goals .goals__blank {
+  display: block;
+}
+
+@media (max-width: 1100px) {
+  .goal--lead {
+    grid-row: span 1;
+  }
+  .goal--lead .goal__photo {
+    min-height: 0;
+    aspect-ratio: 16 / 9;
+  }
+}
+
+@media (max-width: 680px) {
+  .goals-frame {
+    padding: 12px;
+  }
+  .featured__plate {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .featured__buy {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .featured__buy .plaque {
+    width: 100%;
+  }
 }
 
 .price {
+  white-space: nowrap;
   font-family: var(--font-body);
   font-weight: 650;
   font-size: 1.15rem;
@@ -720,7 +822,7 @@ p {
   color: var(--muted);
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 1;
+  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
 }
 
@@ -884,9 +986,11 @@ p {
 
 .goal__name {
   font-family: var(--font-display);
-  font-size: 1.3rem;
+  font-size: 1.18rem;
   color: var(--cobalt);
   line-height: 1.15;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
 .goal__count {
@@ -1088,8 +1192,10 @@ p {
 
 .card__title {
   font-family: var(--font-display);
-  font-size: 1.12rem;
-  line-height: 1.2;
+  font-size: 1.02rem;
+  line-height: 1.22;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
   color: var(--cobalt);
   text-decoration: none;
 }
@@ -1233,7 +1339,7 @@ p {
 .drench__foot svg {
   width: 18px;
   height: 18px;
-  color: var(--mustard);
+  color: var(--wash);
 }
 
 @media (max-width: 820px) {
@@ -1791,7 +1897,8 @@ p {
     grid-template-columns: 1fr;
   }
   .checkout__summary {
-    position: static;
+    position: relative;
+    top: auto;
     order: -1;
   }
 }
@@ -1905,6 +2012,32 @@ p {
   font-size: 14.5px;
   box-shadow: inset 0 0 0 3px var(--cobalt), inset 0 0 0 4px var(--mustard), 0 10px 30px -12px rgba(19, 38, 92, 0.5);
   transition: opacity 220ms var(--ease-out), transform 220ms var(--ease-out);
+}
+
+.toast {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+}
+
+.toast.is-on {
+  pointer-events: auto;
+}
+
+.toast__link {
+  border: 0;
+  background: transparent;
+  color: var(--mustard);
+  font-family: var(--font-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 13px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 .toast.is-on {

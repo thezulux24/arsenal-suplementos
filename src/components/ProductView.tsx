@@ -67,8 +67,8 @@ export function ProductView({ slug }: { slug: string }) {
         </div>
 
         <div className="pdp__info">
-          <span className="card__brand">{p.brand}</span>
-          <h1 style={{ fontSize: 'clamp(2rem, 1.3rem + 2.2vw, 3.2rem)' }}>{p.title}</h1>
+          <h1 style={{ fontSize: 'clamp(1.9rem, 1.2rem + 2vw, 3rem)' }}>{p.title}</h1>
+          <span className="card__pres" style={{ fontSize: 15 }}>{[p.brand, p.presentation].filter(Boolean).join(' · ')}</span>
           {p.summary ? <p className="lede">{p.summary}</p> : null}
           <div style={{ display: 'grid', gap: 4 }}>
             <Price p={p} big />
@@ -104,7 +104,7 @@ export function ProductView({ slug }: { slug: string }) {
             <dt>Presentación</dt>
             <dd>{p.presentation}</dd>
             <dt>{d.registrationLabel || 'Registro sanitario'}</dt>
-            <dd>{p.invima ? `INVIMA ${p.invima}` : d.noRegistrationText || 'Pídelo por WhatsApp'}</dd>
+            <dd>{p.invima ? `INVIMA ${p.invima}` : <span className="pending">{d.noRegistrationText || 'Por confirmar'}</span>}</dd>
             <dt>Objetivo</dt>
             <dd>{p.category}</dd>
             <dt>Envío</dt>

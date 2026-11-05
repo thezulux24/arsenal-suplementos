@@ -56,15 +56,14 @@ export function ProductCard({ p, addLabel, soldOutLabel }: { p: Product; addLabe
   return (
     <article className={`card${soldOut ? ' is-soldout' : ''}`}>
       {onSale ? <span className="card__flag">Oferta</span> : null}
-      <Link href={`/producto/${p.slug}`} className="card__photo" tabIndex={-1} aria-hidden="true">
+      <Link href={`/producto/${p.slug}`} className="card__photo tile-seams" tabIndex={-1} aria-hidden="true">
         <img src={absMedia(p.imageUrl)} alt="" loading="lazy" width={600} height={600} />
       </Link>
       <div className="card__body">
-        <span className="card__brand">{p.brand}</span>
         <Link href={`/producto/${p.slug}`} className="card__title">
           {p.title}
         </Link>
-        <span className="card__pres">{p.presentation}</span>
+        <span className="card__pres">{[p.brand, p.presentation].filter(Boolean).join(' · ')}</span>
         <div className="card__buy">
           <Price p={p} />
           <AddButton product={p} label={addLabel} soldOutLabel={soldOutLabel} />
@@ -72,8 +71,8 @@ export function ProductCard({ p, addLabel, soldOutLabel }: { p: Product; addLabe
       </div>
       <div className="card__agate agate">
         {per ? <span>{per}</span> : null}
-        {per && p.invima ? ' · ' : null}
-        {p.invima ? <span>INVIMA {p.invima}</span> : null}
+        {per ? ' · ' : null}
+        {p.invima ? <span>INVIMA {p.invima}</span> : <span className="pending">INVIMA por confirmar</span>}
       </div>
     </article>
   );
