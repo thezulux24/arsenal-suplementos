@@ -14,6 +14,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { accountGlobals, accountPages, checkoutAdditions, orderAdditions, trackingAdditions } from './accounts.mjs';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..', '..');
@@ -636,7 +637,10 @@ const search = {
   ],
 };
 
-const pages = [home, shop, productPage, about, contact, checkout, order, tracking, favorites, search].map((p, i) => ({
+/** Suma campos a la primera sección de una página (esquema del inspector + contenido). */
+const withFields = (pg, add) => ({ ...pg, sections: pg.sections.map((s, i) => (i ? s : { ...s, schema: [...s.schema, ...add.schema.filter((f) => !s.schema.some((x) => x.key === f.key))], data: { ...s.data, ...add.data } })) });
+
+const pages = [home, shop, productPage, about, contact, withFields(checkout, checkoutAdditions), withFields(order, orderAdditions), withFields(tracking, trackingAdditions), favorites, search, ...accountPages].map((p, i) => ({
   isPublished: true,
   order: i,
   ...p,
@@ -688,6 +692,7 @@ const globalData = {
   footerCategoriesHeading: 'Categorías',
   footerContactHeading: 'Atención',
   whatsappFloatLabel: 'Escríbenos',
+  ...accountGlobals.data,
   site: {
     notFound: {
       title: 'No encontramos esta página',
@@ -789,6 +794,7 @@ const globalSchema = [
   g('footerCategoriesHeading', 'text', 'Pie: título de categorías'),
   g('footerContactHeading', 'text', 'Pie: título de atención'),
   g('whatsappFloatLabel', 'text', 'Botón flotante de WhatsApp'),
+  ...accountGlobals.schema,
 ];
 
 const navigationConfig = {
