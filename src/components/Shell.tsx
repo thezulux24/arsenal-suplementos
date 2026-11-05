@@ -198,7 +198,7 @@ export function Header() {
             <Link href="/buscar" className="icon-btn header__search-btn" aria-label={useGlobal<string>('searchLabel', '')}>
               <Search aria-hidden="true" />
             </Link>
-            <Link href="/favoritos" className="icon-btn" title={favLabel}>
+            <Link href="/favoritos" className="icon-btn header__fav" title={favLabel}>
               <Heart aria-hidden="true" />
               <CmsGlobalText f="favoritesLabel" className="sr-only" />
               {ready && favorites.length ? <span className="icon-btn__count">{favorites.length}</span> : null}
@@ -226,6 +226,12 @@ export function Header() {
           <SearchBox id="mobile-search" onDone={() => setMenu(false)} />
           <div onClick={(e) => (e.target as HTMLElement).closest('a') && setMenu(false)}>
             <CmsNav list="header" className="mobile-nav__links" linkClassName="mobile-nav__link" />
+            {/* En teléfonos angostos favoritos sale de la cabecera y vive aquí. */}
+            <Link href="/favoritos" className="mobile-nav__link mobile-nav__fav">
+              <Heart aria-hidden="true" />
+              <CmsGlobalText f="favoritesLabel" />
+              {ready && favorites.length ? <span className="cart-btn__count">{favorites.length}</span> : null}
+            </Link>
           </div>
           {wa ? (
             <a className="plaque plaque--block" style={{ marginTop: 'auto' }} href={wa} target="_blank" rel="noopener noreferrer" onClick={trackWhatsApp}>

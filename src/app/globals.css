@@ -777,6 +777,26 @@ p {
   padding: 12px 0;
   border-bottom: 1px solid var(--grout);
 }
+.mobile-nav__fav {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.mobile-nav__fav svg {
+  width: 22px;
+  height: 22px;
+}
+/* Cabecera en teléfonos angostos (360–400 px): favoritos pasa al menú para que el menú no se salga. */
+@media (min-width: 401px) {
+  .mobile-nav__fav {
+    display: none;
+  }
+}
+@media (max-width: 400px) {
+  .header__fav {
+    display: none;
+  }
+}
 
 /* Buscador */
 .search {
@@ -3654,7 +3674,8 @@ html[data-cms-builder] .acct-entry[data-state='loading'] > :not(.fleuron) {
   padding: 0;
   grid-template-columns: minmax(0, 1fr);
 }
-.acct-list > li {
+.acct-list > li,
+.acct-list > [role='listitem'] {
   padding: 18px clamp(16px, 2.4vw, 24px);
   display: grid;
   gap: 12px;

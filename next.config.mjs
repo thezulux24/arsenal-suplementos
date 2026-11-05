@@ -18,7 +18,18 @@ const nextConfig = {
   },
   // El portal muestra la tienda en un iframe: nada de X-Frame-Options DENY, solo los orígenes del CMS.
   async headers() {
-    return [{ source: '/:path*', headers: [{ key: 'Content-Security-Policy', value: `frame-ancestors 'self' ${cms} ${portals}` }] }];
+    return [
+      {
+        source: '/:path*',
+        headers: [
+          { key: 'Content-Security-Policy', value: `frame-ancestors 'self' ${cms} ${portals}; base-uri 'self'; object-src 'none'; form-action 'self' https://checkout.wompi.co` },
+          { key: 'Strict-Transport-Security', value: 'max-age=31536000; includeSubDomains' },
+          { key: 'X-Content-Type-Options', value: 'nosniff' },
+          { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+          { key: 'Permissions-Policy', value: 'camera=(), microphone=(), geolocation=(), payment=()' },
+        ],
+      },
+    ];
   },
   async redirects() {
     return [{ source: '/catalogo', destination: '/tienda', permanent: true }];
