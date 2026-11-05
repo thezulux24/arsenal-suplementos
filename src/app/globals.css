@@ -58,7 +58,7 @@ body {
 }
 
 :focus-visible {
-  outline: 2px solid var(--mustard);
+  outline: 2px solid var(--cobalt);
   outline-offset: 3px;
 }
 
@@ -343,7 +343,7 @@ p {
 
 @keyframes glaze {
   0% {
-    box-shadow: inset 0 0 0 3px var(--pl-bg), inset 0 0 0 4px var(--mustard), 0 0 0 0 color-mix(in oklab, var(--cobalt-2) 50%, transparent);
+    box-shadow: inset 0 0 0 3px var(--pl-bg), inset 0 0 0 4px var(--wash), 0 0 0 0 color-mix(in oklab, var(--cobalt-2) 50%, transparent);
   }
   100% {
     box-shadow: inset 0 0 0 3px var(--pl-bg), inset 0 0 0 4px color-mix(in oklab, var(--pl-fg) 55%, transparent),
@@ -561,17 +561,6 @@ p {
   background: var(--tile-white);
 }
 
-.wall__caption {
-  align-self: flex-start;
-  padding: 6px 16px 5px;
-  border: 1px solid var(--cobalt);
-  box-shadow: inset 0 0 0 2px var(--tile-white), inset 0 0 0 3px var(--mustard);
-  font-family: var(--font-display);
-  font-size: 13px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: var(--cobalt);
-}
 
 .wall__fact {
   display: flex;
@@ -1183,12 +1172,6 @@ p {
   flex: 1;
 }
 
-.card__brand {
-  font-size: 12px;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
 
 .card__title {
   font-family: var(--font-display);
@@ -1413,7 +1396,7 @@ p {
 .field textarea:focus {
   outline: none;
   border-color: var(--cobalt);
-  box-shadow: inset 0 0 0 1px var(--cobalt), 0 0 0 3px color-mix(in oklab, var(--mustard) 45%, transparent);
+  box-shadow: inset 0 0 0 1px var(--cobalt), 0 0 0 3px color-mix(in oklab, var(--cobalt-2) 35%, transparent);
 }
 
 .field input::placeholder,
@@ -2029,7 +2012,7 @@ p {
 .toast__link {
   border: 0;
   background: transparent;
-  color: var(--mustard);
+  color: var(--wash);
   font-family: var(--font-display);
   letter-spacing: 0.1em;
   text-transform: uppercase;

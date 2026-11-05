@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-04T23:00:00-05:00",
+  "title": "Design System: Arsenal Suplementos",
+  "extensions": {
+    "runtimeSource": {
+      "description": "Colour tokens are overwritten at render time from the CMS globalData design system (project arsenal) by themeStyle() in src/lib/theme.ts. Stylesheet values are fallbacks.",
+      "mapping": {
+        "primaryColor": "--cobalt",
+        "secondaryColor": "--cobalt-2",
+        "surfaceColor": "--wash",
+        "backgroundColor": "--milk",
+        "accentColor": "--mustard",
+        "textColor": "--ink",
+        "mutedTextColor": "--muted"
+      },
+      "derived": {
+        "--grout": "color-mix(in oklab, var(--cobalt) 16%, var(--milk))",
+        "--grout-soft": "color-mix(in oklab, var(--cobalt) 9%, var(--milk))"
+      },
+      "notMapped": ["--tile-white", "--sale"]
+    },
+    "colorMeta": {
+      "cobalt": { "role": "primary", "displayName": "Azulejo Cobalt", "cssVar": "--cobalt", "cmsKey": "primaryColor", "canonical": "#1b3a8f", "tonalRamp": ["oklch(18% 0.07 265)", "oklch(26% 0.11 265)", "oklch(36% 0.14 265)", "oklch(46% 0.15 265)", "oklch(58% 0.13 265)", "oklch(70% 0.09 265)", "oklch(83% 0.05 265)", "oklch(94% 0.02 265)"] },
+      "cobalt-2": { "role": "secondary", "displayName": "Glaze Blue", "cssVar": "--cobalt-2", "cmsKey": "secondaryColor", "canonical": "#3b63c4", "tonalRamp": ["oklch(20% 0.07 264)", "oklch(30% 0.11 264)", "oklch(41% 0.14 264)", "oklch(52% 0.16 264)", "oklch(63% 0.13 264)", "oklch(74% 0.09 264)", "oklch(85% 0.05 264)", "oklch(95% 0.02 264)"] },
+      "mustard": { "role": "tertiary", "displayName": "Kiln Mustard", "cssVar": "--mustard", "cmsKey": "accentColor", "canonical": "#d9a21b", "tonalRamp": ["oklch(22% 0.05 80)", "oklch(34% 0.08 80)", "oklch(48% 0.11 80)", "oklch(62% 0.14 80)", "oklch(74% 0.15 80)", "oklch(82% 0.12 82)", "oklch(90% 0.07 85)", "oklch(96% 0.03 88)"] },
+      "milk": { "role": "neutral", "displayName": "Milk Plaster", "cssVar": "--milk", "cmsKey": "backgroundColor", "canonical": "#f7f6f1", "tonalRamp": ["oklch(20% 0.004 100)", "oklch(32% 0.005 100)", "oklch(45% 0.006 100)", "oklch(58% 0.007 100)", "oklch(70% 0.007 100)", "oklch(82% 0.008 100)", "oklch(91% 0.008 100)", "oklch(97% 0.008 100)"] },
+      "tile-white": { "role": "neutral", "displayName": "Glazed Tile", "cssVar": "--tile-white", "canonical": "#ffffff", "tonalRamp": ["oklch(20% 0 0)", "oklch(32% 0 0)", "oklch(45% 0 0)", "oklch(58% 0 0)", "oklch(70% 0 0)", "oklch(82% 0 0)", "oklch(92% 0 0)", "oklch(100% 0 0)"] },
+      "wash": { "role": "neutral", "displayName": "Cobalt Wash", "cssVar": "--wash", "cmsKey": "surfaceColor", "canonical": "#dce5f6", "tonalRamp": ["oklch(22% 0.03 265)", "oklch(34% 0.04 265)", "oklch(47% 0.045 265)", "oklch(60% 0.045 265)", "oklch(72% 0.04 265)", "oklch(83% 0.035 265)", "oklch(92% 0.025 265)", "oklch(97% 0.01 265)"] },
+      "ink": { "role": "neutral", "displayName": "Deep Ink", "cssVar": "--ink", "cmsKey": "textColor", "canonical": "#13265c", "tonalRamp": ["oklch(16% 0.06 265)", "oklch(22% 0.08 265)", "oklch(28% 0.1 265)", "oklch(38% 0.1 265)", "oklch(52% 0.08 265)", "oklch(68% 0.06 265)", "oklch(82% 0.035 265)", "oklch(94% 0.015 265)"] },
+      "muted": { "role": "neutral", "displayName": "Faded Cobalt", "cssVar": "--muted", "cmsKey": "mutedTextColor", "canonical": "#4a5b8a", "tonalRamp": ["oklch(18% 0.04 270)", "oklch(28% 0.05 270)", "oklch(38% 0.065 270)", "oklch(47% 0.07 270)", "oklch(60% 0.06 270)", "oklch(72% 0.045 270)", "oklch(84% 0.03 270)", "oklch(95% 0.01 270)"] },
+      "grout": { "role": "neutral", "displayName": "Grout", "cssVar": "--grout", "canonical": "color-mix(in oklab, var(--cobalt) 16%, var(--milk))", "tonalRamp": ["oklch(25% 0.02 265)", "oklch(38% 0.02 265)", "oklch(50% 0.02 265)", "oklch(62% 0.02 265)", "oklch(74% 0.018 265)", "oklch(85% 0.016 265)", "oklch(88% 0.015 265)", "oklch(95% 0.008 265)"] },
+      "grout-soft": { "role": "neutral", "displayName": "Soft Grout", "cssVar": "--grout-soft", "canonical": "color-mix(in oklab, var(--cobalt) 9%, var(--milk))", "tonalRamp": ["oklch(25% 0.012 265)", "oklch(38% 0.012 265)", "oklch(50% 0.012 265)", "oklch(62% 0.012 265)", "oklch(74% 0.011 265)", "oklch(85% 0.01 265)", "oklch(92% 0.009 265)", "oklch(97% 0.005 265)"] },
+      "sale": { "role": "neutral", "displayName": "Sale Oxide", "cssVar": "--sale", "canonical": "#a3261b", "tonalRamp": ["oklch(22% 0.07 30)", "oklch(32% 0.11 30)", "oklch(40% 0.14 30)", "oklch(48% 0.16 30)", "oklch(60% 0.14 30)", "oklch(72% 0.1 30)", "oklch(84% 0.05 30)", "oklch(95% 0.02 30)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Hero h1 in the cartouche and product-page h1. Marcellus capitals; digits from the Hanken figures subset (unicode-range U+0030-0039)." },
+      "headline": { "displayName": "Headline", "purpose": "Section h2s, uppercase." },
+      "title": { "displayName": "Title", "purpose": "h3s, FAQ questions, fieldset titles." },
+      "name": { "displayName": "Name", "purpose": "Product and goal names on tiles, cobalt uppercase." },
+      "body": { "displayName": "Body", "purpose": "All reading text, tabular figures." },
+      "lede": { "displayName": "Lede", "purpose": "Section and hero intros in muted, max 58ch." },
+      "price": { "displayName": "Price", "purpose": "Prices, always Hanken 650; big variant clamp(1.5rem, 1.2rem + 1vw, 2rem)." },
+      "label": { "displayName": "Label", "purpose": "Plaque labels, flags, floating WhatsApp, toast actions." },
+      "agate": { "displayName": "Agate", "purpose": "Unit price, INVIMA registration, IVA and legal lines." }
+    },
+    "shadows": [
+      { "name": "frame-cobalt", "value": "inset 0 0 0 5px var(--tile-white), inset 0 0 0 6px var(--cobalt)", "purpose": "Inner rule of the cobalt cartouche (with 2px cobalt border)." },
+      { "name": "frame-mustard", "value": "inset 0 0 0 5px var(--tile-white), inset 0 0 0 7px var(--mustard), inset 0 0 0 10px var(--tile-white), inset 0 0 0 11px var(--cobalt)", "purpose": "Mustard-ruled cartouche: hero, goals wall, advice panel, order status." },
+      { "name": "plaque-rule", "value": "inset 0 0 0 3px var(--pl-bg), inset 0 0 0 4px color-mix(in oklab, var(--pl-fg) 55%, transparent)", "purpose": "Glazed inner rule on every plaque." },
+      { "name": "selected-tile", "value": "inset 0 0 0 2px var(--cobalt)", "purpose": "Active goal panel and pressed gallery thumbnail." },
+      { "name": "float-wa", "value": "0 8px 24px -10px rgba(19, 38, 92, 0.35)", "purpose": "Floating WhatsApp tile only." },
+      { "name": "float-toast", "value": "0 10px 30px -12px rgba(19, 38, 92, 0.5)", "purpose": "Toast only." }
+    ],
+    "motion": [
+      { "name": "ease-out", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "The single easing for all transitions." },
+      { "name": "t-fast", "value": "160ms", "purpose": "Press, lift, link underline colour, field focus." },
+      { "name": "t-wash", "value": "320ms", "purpose": "Glaze wash: bottom-up background-size fill on tiles, filters, plaque fill change, nav underline." },
+      { "name": "glaze-pulse", "value": "700ms keyframes glaze", "purpose": "One pulse across the plaque when a product is added to cart." },
+      { "name": "drawer", "value": "300ms translateX", "purpose": "Cart drawer entry from the right." },
+      { "name": "packshot-zoom", "value": "scale(1.03) over 500-600ms", "purpose": "Packshot hover on tiles." },
+      { "name": "reduced-motion", "value": "durations forced to 1ms", "purpose": "prefers-reduced-motion: reduce." }
+    ],
+    "breakpoints": [
+      { "name": "phone", "value": "520px" },
+      { "name": "small", "value": "680px" },
+      { "name": "catalog-2col", "value": "760px" },
+      { "name": "stack", "value": "820px" },
+      { "name": "nav-collapse", "value": "900px" },
+      { "name": "wall-8col", "value": "1100px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Plaque (primary)",
+      "kind": "button",
+      "refersTo": "plaque",
+      "description": "Cobalt glazed plaque with inner milk rule; every primary action, including Agregar al carrito.",
+      "html": "<button class=\"ds-plaque\"><svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg>Agregar al carrito</button>",
+      "css": ".ds-plaque { --pl-bg: var(--cobalt, #1b3a8f); --pl-fg: var(--milk, #f7f6f1); display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 22px; border: 0; border-radius: 2px; background: var(--pl-bg); color: var(--pl-fg); font-family: var(--font-display, 'Marcellus', 'Times New Roman', serif); font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; box-shadow: inset 0 0 0 3px var(--pl-bg), inset 0 0 0 4px color-mix(in oklab, var(--pl-fg) 55%, transparent); transition: transform 160ms cubic-bezier(0.22,1,0.36,1), background-color 320ms cubic-bezier(0.22,1,0.36,1), box-shadow 320ms cubic-bezier(0.22,1,0.36,1); } .ds-plaque svg { width: 18px; height: 18px; } .ds-plaque:hover { --pl-bg: color-mix(in oklab, var(--cobalt, #1b3a8f) 82%, black); transform: translateY(-1px); } .ds-plaque:active { transform: scale(0.98); } .ds-plaque:focus-visible { outline: 2px solid var(--cobalt, #1b3a8f); outline-offset: 3px; }"
+    },
+    {
+      "name": "Plaque (ghost)",
+      "kind": "button",
+      "refersTo": "plaque-ghost",
+      "description": "Tile-white plaque with cobalt double rule; secondary actions.",
+      "html": "<button class=\"ds-plaque-ghost\">Ver el catálogo</button>",
+      "css": ".ds-plaque-ghost { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px; border: 0; border-radius: 2px; background: var(--tile-white, #fff); color: var(--cobalt, #1b3a8f); font-family: var(--font-display, 'Marcellus', serif); font-size: 15px; letter-spacing: 0.12em; text-transform: uppercase; cursor: pointer; box-shadow: inset 0 0 0 2px var(--cobalt, #1b3a8f), inset 0 0 0 5px var(--tile-white, #fff), inset 0 0 0 6px var(--cobalt, #1b3a8f); transition: background-color 320ms cubic-bezier(0.22,1,0.36,1), transform 160ms cubic-bezier(0.22,1,0.36,1); } .ds-plaque-ghost:hover { background: var(--wash, #dce5f6); transform: translateY(-1px); } .ds-plaque-ghost:focus-visible { outline: 2px solid var(--cobalt, #1b3a8f); outline-offset: 3px; }"
+    },
+    {
+      "name": "Filter chip",
+      "kind": "chip",
+      "refersTo": "filter",
+      "description": "Catalogue goal filter; glazes from the bottom on hover, fills cobalt when pressed.",
+      "html": "<div style=\"display:flex;gap:8px\"><button class=\"ds-filter\" aria-pressed=\"true\">Todos<span class=\"ds-filter__n\">27</span></button><button class=\"ds-filter\" aria-pressed=\"false\">Dormir<span class=\"ds-filter__n\">4</span></button></div>",
+      "css": ".ds-filter { min-height: 40px; padding: 0 14px; border: 1px solid var(--cobalt, #1b3a8f); background: linear-gradient(var(--cobalt, #1b3a8f), var(--cobalt, #1b3a8f)) no-repeat bottom / 100% 0%, var(--tile-white, #fff); color: var(--cobalt, #1b3a8f); font-family: var(--font-body, 'Hanken Grotesk', system-ui, sans-serif); font-size: 14px; cursor: pointer; transition: background-size 320ms cubic-bezier(0.22,1,0.36,1), color 320ms cubic-bezier(0.22,1,0.36,1); } .ds-filter:hover { background-size: 100% 12%, auto; } .ds-filter[aria-pressed='true'] { background-size: 100% 100%, auto; color: var(--milk, #f7f6f1); } .ds-filter__n { margin-left: 6px; opacity: 0.7; font-size: 12px; } .ds-filter:focus-visible { outline: 2px solid var(--cobalt, #1b3a8f); outline-offset: 3px; }"
+    },
+    {
+      "name": "Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "Checkout and advice form field on tile-white.",
+      "html": "<label class=\"ds-field\"><span>Celular</span><input placeholder=\"300 000 0000\"></label>",
+      "css": ".ds-field { display: grid; gap: 6px; font-family: var(--font-body, 'Hanken Grotesk', system-ui, sans-serif); } .ds-field span { font-size: 13.5px; color: var(--ink, #13265c); } .ds-field input { min-height: 48px; padding: 12px 14px; border: 1px solid color-mix(in oklab, var(--cobalt, #1b3a8f) 45%, var(--milk, #f7f6f1)); border-radius: 2px; background: var(--tile-white, #fff); font: inherit; font-size: 16px; color: var(--ink, #13265c); caret-color: var(--cobalt, #1b3a8f); transition: border-color 160ms cubic-bezier(0.22,1,0.36,1), box-shadow 160ms cubic-bezier(0.22,1,0.36,1); } .ds-field input:focus { outline: none; border-color: var(--cobalt, #1b3a8f); box-shadow: inset 0 0 0 1px var(--cobalt, #1b3a8f), 0 0 0 3px color-mix(in oklab, var(--cobalt-2, #3b63c4) 35%, transparent); }"
+    },
+    {
+      "name": "Header navigation",
+      "kind": "nav",
+      "description": "Sticky milk header: brand tile with mustard inner rule, roman-capital name, Hanken links with drawn cobalt underline.",
+      "html": "<header class=\"ds-header\"><a class=\"ds-brand\"><span class=\"ds-brand__tile\">A</span><span class=\"ds-brand__name\">Arsenal<small>Suplementos · Cali</small></span></a><nav class=\"ds-nav\"><a>Objetivos</a><a>Catálogo</a><a>Envíos</a></nav></header>",
+      "css": ".ds-header { display: flex; align-items: center; gap: 24px; min-height: 68px; padding: 0 24px; background: color-mix(in oklab, var(--milk, #f7f6f1) 94%, transparent); border-bottom: 1px solid var(--grout, #d4d8e1); font-family: var(--font-body, 'Hanken Grotesk', sans-serif); } .ds-brand { display: inline-flex; align-items: center; gap: 12px; color: var(--cobalt, #1b3a8f); text-decoration: none; } .ds-brand__tile { display: grid; place-items: center; width: 42px; height: 42px; border: 2px solid var(--cobalt, #1b3a8f); box-shadow: inset 0 0 0 3px var(--tile-white, #fff), inset 0 0 0 4px var(--mustard, #d9a21b); background: var(--tile-white, #fff); font-family: var(--font-display, 'Marcellus', serif); font-size: 22px; } .ds-brand__name { font-family: var(--font-display, 'Marcellus', serif); font-size: 19px; letter-spacing: 0.14em; text-transform: uppercase; line-height: 1.05; } .ds-brand__name small { display: block; font-family: var(--font-body, 'Hanken Grotesk', sans-serif); font-size: 11px; letter-spacing: 0.08em; color: var(--muted, #4a5b8a); text-transform: none; } .ds-nav { display: flex; gap: 4px; margin-left: auto; } .ds-nav a { position: relative; padding: 10px 12px; font-size: 14.5px; color: var(--ink, #13265c); cursor: pointer; } .ds-nav a::after { content: ''; position: absolute; left: 12px; right: 12px; bottom: 6px; height: 1px; background: var(--cobalt, #1b3a8f); transform: scaleX(0); transform-origin: left; transition: transform 320ms cubic-bezier(0.22,1,0.36,1); } .ds-nav a:hover::after { transform: scaleX(1); }"
+    },
+    {
+      "name": "Product tile",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Catalogue cell: full-colour packshot multiplied over a seam-gridded white tile, roman-capital name, muted meta line, price and plaque, agate foot.",
+      "html": "<div class=\"ds-tiles\"><article class=\"ds-card\"><div class=\"ds-card__photo\"><div class=\"ds-pack\"></div></div><div class=\"ds-card__body\"><a class=\"ds-card__title\">Magnesio Bisglicinato</a><span class=\"ds-card__pres\">Brand · 120 cápsulas</span><div class=\"ds-card__buy\"><span class=\"ds-price\">$ 89.900</span><button class=\"ds-mini\">+ Agregar</button></div></div><div class=\"ds-card__agate\">$ 749 por cápsula · INVIMA RSiA00000</div></article><span class=\"ds-blank\"></span></div>",
+      "css": ".ds-tiles { display: grid; grid-template-columns: repeat(2, 240px); gap: 1px; background: var(--grout, #d4d8e1); border: 1px solid var(--grout, #d4d8e1); } .ds-blank { background: var(--tile-white, #fff); } .ds-card { display: flex; flex-direction: column; background: linear-gradient(var(--wash, #dce5f6), var(--wash, #dce5f6)) no-repeat bottom / 100% 0%, var(--tile-white, #fff); transition: background-size 320ms cubic-bezier(0.22,1,0.36,1); font-family: var(--font-body, 'Hanken Grotesk', sans-serif); } .ds-card:hover { background-size: 100% 100%, auto; } .ds-card__photo { position: relative; aspect-ratio: 1; background-image: linear-gradient(color-mix(in oklab, var(--cobalt, #1b3a8f) 11%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in oklab, var(--cobalt, #1b3a8f) 11%, transparent) 1px, transparent 1px); background-size: 33.333% 33.333%; background-position: -1px -1px; } .ds-pack { position: absolute; inset: 22% 32%; background: linear-gradient(#fff 0 18%, #2e7d4f 18% 70%, #fff 70%); border-radius: 6px; mix-blend-mode: multiply; } .ds-card__body { display: flex; flex-direction: column; gap: 4px; padding: 4px 18px 16px; } .ds-card__title { font-family: var(--font-display, 'Marcellus', serif); font-size: 1.02rem; line-height: 1.22; text-transform: uppercase; letter-spacing: 0.05em; color: var(--cobalt, #1b3a8f); cursor: pointer; } .ds-card__title:hover { text-decoration: underline; text-decoration-thickness: 1px; } .ds-card__pres { font-size: 13.5px; color: var(--muted, #4a5b8a); } .ds-card__buy { display: flex; align-items: flex-end; justify-content: space-between; gap: 10px; padding-top: 12px; } .ds-price { font-weight: 650; font-size: 1.15rem; color: var(--ink, #13265c); font-variant-numeric: tabular-nums; } .ds-mini { min-height: 40px; padding: 0 14px; border: 0; border-radius: 2px; background: var(--cobalt, #1b3a8f); color: var(--milk, #f7f6f1); font-family: var(--font-display, 'Marcellus', serif); font-size: 13px; letter-spacing: 0.12em; text-transform: uppercase; box-shadow: inset 0 0 0 3px var(--cobalt, #1b3a8f), inset 0 0 0 4px color-mix(in oklab, var(--milk, #f7f6f1) 55%, transparent); cursor: pointer; } .ds-card__agate { border-top: 1px solid var(--grout, #d4d8e1); padding: 9px 18px 12px; font-size: 12.5px; line-height: 1.45; color: var(--muted, #4a5b8a); }"
+    },
+    {
+      "name": "Cartouche frame",
+      "kind": "custom",
+      "refersTo": "frame",
+      "description": "Signature framed panel: cobalt double rule, mustard inner rule, fleurons in four corners.",
+      "html": "<div class=\"ds-frame\"><svg class=\"ds-fl ds-fl--tl\" viewBox=\"0 0 24 24\"><path d=\"M0 0h11A11 11 0 0 1 0 11Z\" fill=\"currentColor\"/><path d=\"M9.5 9.5c4.4 0 7.6 3.2 7.6 7.6-4.4 0-7.6-3.2-7.6-7.6Z\" fill=\"currentColor\"/><circle cx=\"19.6\" cy=\"19.6\" r=\"2.1\" fill=\"#d9a21b\"/></svg><svg class=\"ds-fl ds-fl--tr\" viewBox=\"0 0 24 24\"><path d=\"M0 0h11A11 11 0 0 1 0 11Z\" fill=\"currentColor\"/><path d=\"M9.5 9.5c4.4 0 7.6 3.2 7.6 7.6-4.4 0-7.6-3.2-7.6-7.6Z\" fill=\"currentColor\"/><circle cx=\"19.6\" cy=\"19.6\" r=\"2.1\" fill=\"#d9a21b\"/></svg><svg class=\"ds-fl ds-fl--bl\" viewBox=\"0 0 24 24\"><path d=\"M0 0h11A11 11 0 0 1 0 11Z\" fill=\"currentColor\"/><path d=\"M9.5 9.5c4.4 0 7.6 3.2 7.6 7.6-4.4 0-7.6-3.2-7.6-7.6Z\" fill=\"currentColor\"/><circle cx=\"19.6\" cy=\"19.6\" r=\"2.1\" fill=\"#d9a21b\"/></svg><svg class=\"ds-fl ds-fl--br\" viewBox=\"0 0 24 24\"><path d=\"M0 0h11A11 11 0 0 1 0 11Z\" fill=\"currentColor\"/><path d=\"M9.5 9.5c4.4 0 7.6 3.2 7.6 7.6-4.4 0-7.6-3.2-7.6-7.6Z\" fill=\"currentColor\"/><circle cx=\"19.6\" cy=\"19.6\" r=\"2.1\" fill=\"#d9a21b\"/></svg><h2 class=\"ds-frame__h\">Suplementos con registro, desde Cali</h2></div>",
+      "css": ".ds-frame { position: relative; padding: 48px; border: 2px solid var(--cobalt, #1b3a8f); background: var(--tile-white, #fff); box-shadow: inset 0 0 0 5px var(--tile-white, #fff), inset 0 0 0 7px var(--mustard, #d9a21b), inset 0 0 0 10px var(--tile-white, #fff), inset 0 0 0 11px var(--cobalt, #1b3a8f); } .ds-fl { position: absolute; width: 26px; height: 26px; color: var(--cobalt, #1b3a8f); } .ds-fl--tl { top: 11px; left: 11px; } .ds-fl--tr { top: 11px; right: 11px; transform: scaleX(-1); } .ds-fl--bl { bottom: 11px; left: 11px; transform: scaleY(-1); } .ds-fl--br { bottom: 11px; right: 11px; transform: scale(-1,-1); } .ds-frame__h { margin: 0; font-family: var(--font-display, 'Marcellus', serif); font-weight: 400; font-size: 2rem; line-height: 1.04; letter-spacing: 0.035em; text-transform: uppercase; color: var(--cobalt, #1b3a8f); }"
+    },
+    {
+      "name": "Padrão frieze",
+      "kind": "custom",
+      "description": "Geometric azulejo band between 2px cobalt rules; the frieze centre dot is one of mustard's permitted places.",
+      "html": "<div class=\"ds-frieze\"></div>",
+      "css": ".ds-frieze { width: 100%; height: 40px; border-block: 2px solid var(--cobalt, #1b3a8f); background-color: var(--milk, #f7f6f1); background-image: url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23F7F6F1'/%3E%3Cg fill='%231B3A8F'%3E%3Ccircle cx='0' cy='0' r='7'/%3E%3Ccircle cx='40' cy='0' r='7'/%3E%3Ccircle cx='0' cy='40' r='7'/%3E%3Ccircle cx='40' cy='40' r='7'/%3E%3Cpath d='M20 4.5c3.6 4.6 3.6 9.6 0 14.2-3.6-4.6-3.6-9.6 0-14.2Z'/%3E%3Cpath d='M20 35.5c-3.6-4.6-3.6-9.6 0-14.2 3.6 4.6 3.6 9.6 0 14.2Z'/%3E%3Cpath d='M4.5 20c4.6-3.6 9.6-3.6 14.2 0-4.6 3.6-9.6 3.6-14.2 0Z'/%3E%3Cpath d='M35.5 20c-4.6 3.6-9.6 3.6-14.2 0 4.6-3.6 9.6-3.6 14.2 0Z'/%3E%3C/g%3E%3Ccircle cx='20' cy='20' r='2.6' fill='%23D9A21B'/%3E%3Cpath d='M0 .5h40M.5 0v40' stroke='%231B3A8F' stroke-opacity='.18'/%3E%3C/svg%3E\"); background-size: 40px 40px; background-repeat: repeat-x; }"
+    },
+    {
+      "name": "Shipping step (drench)",
+      "kind": "custom",
+      "refersTo": "drench",
+      "description": "The one cobalt band per page: steps as cobalt tiles on lighter seams, numbered badge with mustard inner rule and Hanken figures.",
+      "html": "<div class=\"ds-steps\"><div class=\"ds-step\"><span class=\"ds-step__num\">1</span><h3>Pides antes de las 2 p.m.</h3><p>Despachamos el mismo día desde Cali.</p></div><div class=\"ds-step\"><span class=\"ds-step__num\">2</span><h3>Pagas con Wompi</h3><p>Tarjeta, PSE o Nequi.</p></div></div>",
+      "css": ".ds-steps { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: color-mix(in oklab, var(--milk, #f7f6f1) 28%, var(--cobalt, #1b3a8f)); border: 1px solid color-mix(in oklab, var(--milk, #f7f6f1) 28%, var(--cobalt, #1b3a8f)); } .ds-step { display: flex; flex-direction: column; gap: 14px; padding: 32px; background: var(--cobalt, #1b3a8f); color: var(--milk, #f7f6f1); font-family: var(--font-body, 'Hanken Grotesk', sans-serif); } .ds-step h3 { margin: 0; font-family: var(--font-display, 'Marcellus', serif); font-weight: 400; font-size: 1.3rem; color: var(--milk, #f7f6f1); } .ds-step p { margin: 0; color: color-mix(in oklab, var(--milk, #f7f6f1) 84%, var(--cobalt, #1b3a8f)); } .ds-step__num { display: inline-grid; place-items: center; width: 56px; height: 56px; border: 1px solid var(--milk, #f7f6f1); box-shadow: inset 0 0 0 3px var(--cobalt, #1b3a8f), inset 0 0 0 4px var(--mustard, #d9a21b); font-family: var(--font-figures, 'Hanken Grotesk'), sans-serif; font-size: 22px; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Azulejo Station Hall",
+    "overview": "The shop is a tiled station hall. Every surface is a wall of glazed white tiles held in a cobalt-tinted grout grid; every goal is a framed tile panel; every product is painted onto its own tiles, with the seams running straight through it. Cobalt does all the drawing: headings, rules, frames, plaques, the one drenched band. Milk white is the plaster of the hall; pure tile-white is the glaze inside the grid.\n\nOrnament is architectural, not decorative garnish. Double-rule cartouche frames with fleuron corners mark the important panels, thin padrão friezes run above and below the hero wall like a dado band, and the names on the wall are set in roman capitals. Density is that of a catalogue wall: tiles butt against each other with 1px seams and no gaps, so the grid itself is the layout. Motion is the kiln: a cobalt or wash glaze fills a tile from the bottom on hover or selection, 320ms ease-out, and nothing moves because the page scrolled.\n\nThe world refuses the pharmacy-chain banner, the icon-category row and the product carousel.",
+    "keyCharacteristics": [
+      "Cobalt line work on milk white and glazed tile-white; one ink family.",
+      "1px grout seams as the layout system; tiles, never floating cards.",
+      "Mustard appears only as a rule inside a frame or as the frieze's centre dot.",
+      "Roman capitals (Marcellus) for names, captions and plaques; Hanken Grotesk for reading, prices and data.",
+      "Glaze-wash hover (bottom-up background fill), no scroll-linked motion.",
+      "Colour tokens are supplied at runtime by the CMS design system."
+    ],
+    "rules": [
+      { "name": "The Mustard In The Frame Rule", "body": "Mustard is drawn only as an inset rule inside a cobalt frame (cartouche, brand tile, flags, step badges) or as the frieze and fleuron centre dot. It never fills a surface, never sets text, never stands alone on milk.", "section": "colors" },
+      { "name": "The One Drench Rule", "body": "Each page carries at most one cobalt-filled band (on home, the shipping steps). Everything else is cobalt line on white.", "section": "colors" },
+      { "name": "The CMS Owns The Palette Rule", "body": "Colour tokens come from the CMS design system at runtime; stylesheet values are fallbacks. Derived colours must be expressed as `color-mix` of the tokens so they follow a CMS change.", "section": "colors" },
+      { "name": "The Roman Capital Rule", "body": "Names on the wall (headings, product names, goal names, plaque labels) are Marcellus capitals with open tracking. Reading text, prices and data are Hanken.", "section": "typography" },
+      { "name": "The Hanken Figures Rule", "body": "Any digit set in the display face comes from the Hanken figures subset, never from Marcellus. Do not remove `--font-figures` from the front of `--font-display`.", "section": "typography" },
+      { "name": "The Meta Line Rule", "body": "Brand and presentation live in one muted meta line under the name (\"Brand · 300 g\"), not as a label above the heading. Nothing sits above a heading.", "section": "typography" },
+      { "name": "The Complete Row Rule", "body": "A tile grid never ends in a ragged row. Fill the remainder with blank glazed tiles (`blank-tile`, shown per breakpoint as b4 / b3 / b2; thumbnails pad to a multiple of 4) so the wall reads as finished tiling.", "section": "layout" },
+      { "name": "The Inset Not Cast Rule", "body": "On the wall, depth is a drawn rule inside the tile. Cast shadows are reserved for elements that physically float above the page.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do build every collection of things as a tile grid: 1px gap over grout, tile-white cells, 1px grout border.",
+      "Do complete every grid row with blank glazed tiles at each breakpoint.",
+      "Do keep packshots in full colour, contained and padded on seam-gridded tile-white, with `mix-blend-mode: multiply`.",
+      "Do set names, headings and plaque labels in Marcellus capitals, and prices, body and data in Hanken Grotesk.",
+      "Do keep `--font-figures` first in the display stack so every display digit comes from Hanken.",
+      "Do put brand and presentation in the muted meta line under the product name.",
+      "Do use the glaze wash (bottom-up background fill, 320ms ease-out) for hover and selection.",
+      "Do change colours in the CMS design system; express derived colours as `color-mix` of the tokens."
+    ],
+    "donts": [
+      "Don't place eyebrows, kickers or category labels above headings.",
+      "Don't use mustard as a fill, a text colour, or anywhere outside a frame rule, flag/badge rule, fleuron dot or frieze.",
+      "Don't desaturate, duotone or tint packshots cobalt.",
+      "Don't leave a ragged last row in any tile grid.",
+      "Don't add scroll-linked reveals, parallax or scroll-triggered entrance animation.",
+      "Don't cast drop shadows on tiles, cards or frames; only the floating WhatsApp tile and toast cast shadows.",
+      "Don't round tiles or frames; the 2px corner belongs to plaques and fields only.",
+      "Don't use a pharmacy-chain hero banner, an icon-category row or a product carousel.",
+      "Don't hardcode palette values in components; read the CSS tokens."
+    ]
+  }
+}
