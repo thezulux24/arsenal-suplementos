@@ -1,4 +1,4 @@
-import { CMS_SLUG, CMS_URL } from './cms';
+import { CMS_SLUG, CMS_URL } from './site';
 
 export const ORDER_STATUS: Record<string, string> = {
   PENDING_PAYMENT: 'Esperando pago',
@@ -25,7 +25,7 @@ export async function trackOrder(code: string) {
   return data;
 }
 
-/** Reads the Wompi transaction the checkout redirected back with, and records an approved payment in the CMS. */
+/** Reads the payment-gateway transaction the checkout redirected back with, and records an approved payment in the CMS. */
 export async function settleWompi(transactionId: string, env: string | null, orderNumber: string) {
   const host = env === 'test' || !env ? 'https://sandbox.wompi.co' : 'https://production.wompi.co';
   const tx = await fetch(`${host}/v1/transactions/${encodeURIComponent(transactionId)}`)

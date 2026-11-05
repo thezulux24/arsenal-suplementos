@@ -1,5 +1,14 @@
-import { HomeView } from '@/components/HomeView';
+import type { Metadata } from 'next';
+import { SitePage } from '@/components/blocks/registry';
+import { getSite } from '@/lib/site';
+import { pageMetadata } from '@/lib/seo';
+
+export const revalidate = 60;
+
+export async function generateMetadata(): Promise<Metadata> {
+  return { ...pageMetadata(await getSite(), '/') };
+}
 
 export default function Page() {
-  return <HomeView />;
+  return <SitePage pageSlug="/" />;
 }
