@@ -37,7 +37,7 @@ export async function settleWompi(transactionId: string, env: string | null, ord
     await fetch(`${CMS_URL}/api/ecommerce/public/${CMS_SLUG}/payments/wompi/confirm-order`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ reference: tx.reference, orderNumber, externalId: tx.id, paymentStatus: 'PAID' }),
+      body: JSON.stringify({ transactionId: tx.id, reference: tx.reference, orderNumber }),
     }).catch(() => {});
   }
   return { status: tx.status as string, method: tx.payment_method_type as string, reference: tx.reference as string };

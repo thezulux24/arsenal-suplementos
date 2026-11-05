@@ -61,6 +61,7 @@ export function CheckoutView() {
             imageUrl: absMedia(l.imageUrl),
           })),
           paymentProvider: 'WOMPI',
+          redirectUrl: `${window.location.origin}/pedido`,
           notes: fd.get('notes'),
         }),
       });

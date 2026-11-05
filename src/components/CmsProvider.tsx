@@ -44,7 +44,7 @@ export function CmsProvider({
     setIsPreview(preview || builder);
     setIsBuilder(builder && window.parent !== window);
     if (preview || builder) {
-      fetchDelivery(true).then((draft) => {
+      fetchDelivery(true, q.get('previewToken') || '').then((draft) => {
         if (!draft) return;
         setPayload(liveRef.current ? applyLiveState(draft, liveRef.current, pageSlug) : draft);
       });

@@ -75,9 +75,10 @@ export type DeliveryPayload = {
   meta?: { mode: string };
 };
 
-export async function fetchDelivery(preview = false): Promise<DeliveryPayload | null> {
+export async function fetchDelivery(preview = false, previewToken = ''): Promise<DeliveryPayload | null> {
   try {
-    const res = await fetch(`${CMS_URL}/api/v1/delivery/${CMS_SLUG}${preview ? '?preview=1' : ''}`, {
+    const q = preview ? `?preview=1${previewToken ? `&previewToken=${encodeURIComponent(previewToken)}` : ''}` : '';
+    const res = await fetch(`${CMS_URL}/api/v1/delivery/${CMS_SLUG}${q}`, {
       ...(preview ? { cache: 'no-store' as const } : { next: { revalidate: 30 } }),
     });
     if (!res.ok) return null;
