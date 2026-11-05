@@ -11,3 +11,5 @@ next-env.d.ts
 shots
 .impeccable/ref
 .impeccable/direction-payload.json
+cms/*.snapshot.json
+cms/*.types.d.ts
